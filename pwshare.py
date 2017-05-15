@@ -1,7 +1,7 @@
 
 #===============================================================================
 # file   : pwshare
-# brief  : python wifi share
+# brief  : python wifi share in windows
 # e-mail : 550034086@qq.com, yehuohan@gmail.com
 # author : yehuohan
 #===============================================================================
