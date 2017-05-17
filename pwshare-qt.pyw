@@ -22,16 +22,19 @@ class MiniWS(qt.QDialog):
     txt_key = None
     btn_start = None
     lbl_status = None
+    status_code = ("Closed", "Started")
+    status = status_code[0]
 
     # Wifi-Share class
     __ws = WifiShare()
 
     def __init__(self, parent = None):
         super(MiniWS, self).__init__(parent)
-        self.setFont(qt.QFont("Cousine", 13))
-        #self.setFont(qt.QFont("Courier New", 13))
+        # init MiniWS
+        self.setFont(qt.QFont("Cousine", 11))
+        #self.setFont(qt.QFont("Courier New", 11))
         self.setWindowTitle(self.tr("Mini WifiShare"))
-        self.resize(280, 230)
+        self.resize(300, 370)
         self.setFixedWidth(280)
         self.init_ui()
 
@@ -40,8 +43,9 @@ class MiniWS(qt.QDialog):
         # create ctrl
         lbl_ssid = qt.QLabel(self.tr("SSID: "), self)
         lbl_key = qt.QLabel(self.tr("KEY: "), self)
-        self.lbl_status = qt.QLabel(self.tr("Ready (in Admin)"), self)
-        self.lbl_status.setAlignment(qt.Qt.AlignCenter)
+        self.lbl_status = qt.QLabel(self.get_time()+self.tr("Ready(Must be Admin)"),self)
+        self.lbl_status.setAlignment(qt.Qt.AlignLeft) 
+        self.lbl_status.setWordWrap(True)
         self.lbl_status.setStyleSheet("""
                                     color: darkred;
                                     background-color: lightblue
@@ -74,26 +78,68 @@ class MiniWS(qt.QDialog):
     # slot function
     @qt.pyqtSlot()
     def start_wifi(self):
-        self.__ws.create_wifi(s = self.txt_ssid.text(), k = self.txt_key.text())
-        self.__ws.start_wifi()
-        self.btn_start.released.disconnect(self.start_wifi)
-        self.btn_start.released.connect(self.restart_wifi)
-        self.btn_start.setText(self.tr("ReStart"))
-        self.lbl_status.setText(self.tr("Started Wifi"))
+        msg = self.get_time() + self.tr("Starting Wifi......\n")
+        ret = self.__ws.create_wifi(s = self.txt_ssid.text(), k = self.txt_key.text())
+        if 0 == ret[0]:
+            msg += self.get_time() + ret[1]
+            ret = self.__ws.start_wifi()
+            if 0 == ret[0]:
+                msg += self.get_time() + ret[1]
+                msg += self.get_time() + self.tr("Started Wifi")
+                self.lbl_status.setText(msg)
+                self.btn_start.released.disconnect(self.start_wifi)
+                self.btn_start.released.connect(self.restart_wifi)
+                self.btn_start.setText(self.tr("ReStart"))
+                self.status = self.status_code[1]
+                return True
+        # failed to create or start wifi
+        msg = self.get_time() + self.tr("Error: check Admin!")
+        self.lbl_status.setText(msg)
+        return False
 
     @qt.pyqtSlot()
     def restart_wifi(self):
-        self.__ws.close_wifi()
-        self.__ws.create_wifi(s = self.txt_ssid.text(), k = self.txt_key.text())
-        self.__ws.start_wifi()
-        self.btn_start.released.disconnect(self.restart_wifi)
-        self.btn_start.released.connect(self.start_wifi)
-        self.btn_start.setText(self.tr("Start"))
+        msg = self.get_time() + self.tr("Closing Wifi......\n")
+        ret = self.__ws.close_wifi()
+        if 0 == ret[0]:
+            msg += self.get_time() + ret[1]
+            msg += self.get_time() + self.tr("Restarting wifi......\n")
+            ret = self.__ws.create_wifi(s = self.txt_ssid.text(), k = self.txt_key.text())
+            if 0 == ret[0]:
+                msg += self.get_time() + ret[1]
+                ret = self.__ws.start_wifi()
+                if 0 == ret[0]:
+                    msg += self.get_time() + ret[1]
+                    msg += self.get_time() + self.tr("Started Wifi")
+                    self.lbl_status.setText(msg)
+                    return True
+        # failed to restart wifi
+        msg = self.get_time() + self.tr("Error: check Admin!")
+        self.lbl_status.setText(msg)
+        return False
 
     @qt.pyqtSlot()
     def close_wifi(self):
-        self.__ws.close_wifi()
-        self.lbl_status.setText(self.tr("Closed Wifi"))
+        if self.status == self.status_code[1]:
+            self.status = self.status_code[0]
+            msg = self.get_time() + self.tr("Closing Wifi......\n")
+            ret = self.__ws.close_wifi()
+            if 0 == ret[0]:
+                msg += self.get_time() + ret[1]
+                msg += self.get_time() + self.tr("Closed wifi")
+                self.lbl_status.setText(msg)
+                self.btn_start.released.disconnect(self.restart_wifi)
+                self.btn_start.released.connect(self.start_wifi)
+                self.btn_start.setText(self.tr("Start"))
+                return True
+            # failed to close wifi
+            msg = self.get_time() + self.tr("Error: check Admin!")
+            self.lbl_status.setText(msg)
+            return False
+
+    # get current time
+    def get_time(self):
+        return "[" + qt.QTime.currentTime().toString() + "] "
 
     # event
     def keyReleaseEvent(self, event):
@@ -108,7 +154,7 @@ if __name__ == "__main__":
     trans = qt.QTranslator()
     trans.load("lang/zh_CN")
     app = qt.QApplication(sys.argv)
-    #app.installTranslator(trans)
+    app.installTranslator(trans)
     mws = MiniWS()
     mws.show()
     app.exec()

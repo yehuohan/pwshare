@@ -6,12 +6,28 @@
  - author : yehuohan
 
 ---
+# FileList
+ - WifiShare.py    : 使用netsh开启wifi热点的库
+ - pwshare.py      : 命令行封装程序
+ - pwshare-gui.pyw : tkinter-gui封装程序
+ - pwshare-qt.pyw  : qt-gui封装程序
+ - lang            : qt-gui语言文件
+ 
+---
 # TODO
  - 每次开启需要重新设置Internet连接共享（选去掉，再选上）
  - 管理员打开问题
+ - exe打包
+ - 密码保存问题
 
 ---
 # Log
+## 20170517 - v1.2.6
+ - 修复WifiShare.create_wifi bug(不能马上以提供的参数创建wifi热点)
+ - 去掉WifiShare.print_wifi和WifiShare.restart_wifi函数
+ - WifiShare的start_wifi, close_wifi, create_wifi使用subprocess.getstatusoutput执行命令，并返回结果
+ - 完善qt-gui界面与显示信息，修复关闭wifi的逻辑Bug
+
 ## 20170517 - v1.2.2
  - 添加qt-gui，基于pyqt5(由qt5.7.0编译而来)
  - 添加语言文件(zh_CN)

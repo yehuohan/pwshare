@@ -10,8 +10,7 @@
 #===============================================================================
 # import
 #===============================================================================
-import os
-
+import subprocess
 
 #===============================================================================
 # WifiShare class
@@ -19,11 +18,6 @@ import os
 class WifiShare:
     ssid = "ubuntu"
     key = "uuuuuuuu"
-
-    def print_wifi(self):
-        print(" wifi ssid : " + self.ssid)
-        print(" wifi key  : " + self.key)
-        print("")
 
     def set_ssid(self, s):
         if s!= "":
@@ -34,21 +28,16 @@ class WifiShare:
             self.key = k
 
     def create_wifi(self, s = "", k = ""):
-        os.system("netsh wlan set hostednetwork mode=allow ssid={s} key={k}".format(s = self.ssid, k = self.key))
         self.set_ssid(s)
         self.set_key(k)
+        return subprocess.getstatusoutput("netsh wlan set hostednetwork mode=allow ssid={s} key={k}".format(s = self.ssid, k = self.key))
 
     def start_wifi(self):
-        os.system("netsh wlan start hostednetwork")
+        return subprocess.getstatusoutput("netsh wlan start hostednetwork")
 
     def stop_wifi(self):
-        os.system("netsh wlan stop hostednetwork")
-
-    def restart_wifi(self):
-        self.close_wifi()
-        self.create_wifi()
-        self.start_wifi()
+        return subprocess.getstatusoutput("netsh wlan stop hostednetwork")
 
     def close_wifi(self):
-        os.system("netsh wlan set hostednetwork mode=disallow")
+        return subprocess.getstatusoutput("netsh wlan set hostednetwork mode=disallow")
 
