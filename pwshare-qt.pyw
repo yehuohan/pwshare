@@ -11,7 +11,7 @@
 #===============================================================================
 import sys
 import PyQt5.Qt as qt
-from WifiShare import WifiShare
+from pyws import WifiShare, WsJson
 
 #===============================================================================
 # MiniWS class : mini wifi share gui-program
@@ -27,6 +27,8 @@ class MiniWS(qt.QDialog):
 
     # Wifi-Share class
     __ws = WifiShare()
+    # json configuration
+    __wj = WsJson("Gui-qt")
 
     def __init__(self, parent = None):
         super(MiniWS, self).__init__(parent)
@@ -57,7 +59,12 @@ class MiniWS(qt.QDialog):
         self.btn_start = qt.QPushButton(self.tr("Start"), self)
         btn_close = qt.QPushButton(self.tr("Close"), self)
         chk_showpw = qt.QCheckBox(self.tr("Show Passwd"), self)
-        chk_showpw.setChecked(True)
+        if self.__wj.get_value("showpw") == "True":
+            chk_showpw.setChecked(True)
+            self.txt_key.setEchoMode(qt.QLineEdit.Normal) 
+        elif self.__wj.get_value("showpw") == "False":
+            chk_showpw.setChecked(False)
+            self.txt_key.setEchoMode(qt.QLineEdit.Password)
         # grid-layout
         grid = qt.QGridLayout(self)
         grid.addWidget(lbl_ssid, 0, 0)
@@ -71,19 +78,22 @@ class MiniWS(qt.QDialog):
         # create connetion
         self.btn_start.released.connect(self.start_wifi)
         btn_close.released.connect(self.close_wifi)
+        toggle_echomode = lambda flg : self.txt_key.setEchoMode(qt.QLineEdit.Normal) if flg else self.txt_key.setEchoMode(qt.QLineEdit.Password)
         chk_showpw.toggled[bool].connect(
-                lambda flg : 
-                self.txt_key.setEchoMode(qt.QLineEdit.Normal) if flg else self.txt_key.setEchoMode(qt.QLineEdit.Password))
+                lambda flg : self.save_showpw(flg) and toggle_echomode(flg))
 
     # slot function
     @qt.pyqtSlot()
     def start_wifi(self):
+        # create wifi with ssid and key
         msg = self.get_time() + self.tr("Starting Wifi......\n")
         ret = self.__ws.create_wifi(s = self.txt_ssid.text(), k = self.txt_key.text())
         if 0 == ret[0]:
+            # start the created wifi
             msg += self.get_time() + ret[1]
             ret = self.__ws.start_wifi()
             if 0 == ret[0]:
+                # show message
                 msg += self.get_time() + ret[1]
                 msg += self.get_time() + self.tr("Started Wifi")
                 self.lbl_status.setText(msg)
@@ -99,6 +109,7 @@ class MiniWS(qt.QDialog):
 
     @qt.pyqtSlot()
     def restart_wifi(self):
+        # close wifi first
         msg = self.get_time() + self.tr("Closing Wifi......\n")
         ret = self.__ws.close_wifi()
         if 0 == ret[0]:
@@ -120,6 +131,7 @@ class MiniWS(qt.QDialog):
 
     @qt.pyqtSlot()
     def close_wifi(self):
+        # close wifi when it had been started
         if self.status == self.status_code[1]:
             self.status = self.status_code[0]
             msg = self.get_time() + self.tr("Closing Wifi......\n")
@@ -140,6 +152,16 @@ class MiniWS(qt.QDialog):
     # get current time
     def get_time(self):
         return "[" + qt.QTime.currentTime().toString() + "] "
+
+    # save show-password
+    def save_showpw(self, flg):
+        if flg:
+            self.__wj.put_value("showpw", "True")
+            print("True")
+        else:
+            self.__wj.put_value("showpw", "False")
+            print("False")
+        return True 
 
     # event
     def keyReleaseEvent(self, event):

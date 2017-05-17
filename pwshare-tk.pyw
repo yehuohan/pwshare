@@ -13,14 +13,14 @@
 #===============================================================================
 import sys
 import tkinter as tk
-import WifiShare
+from pyws import WifiShare
 
 #===============================================================================
 # MiniWS class : mini wifi share gui-program
 #===============================================================================
 class MiniWS():
     # wifi share module
-    __ws = WifiShare.WifiShare()
+    __ws = WifiShare()
 
     # main windows
     __mw = None
@@ -81,12 +81,11 @@ class MiniWS():
         self.__ws.close_wifi()
         self.__ws.create_wifi(s = self.__ssid.get(), k = self.__key.get())
         self.__ws.start_wifi()
-        self.__btn_start["text"] = "Start"
-        self.__btn_start["command"] = self.start_wifi
-        self.__lbl_msg["text"] = self.__msg["S"]
 
     def close_wifi(self):
         self.__ws.close_wifi()
+        self.__btn_start["text"] = "Start"
+        self.__btn_start["command"] = self.start_wifi
         self.__lbl_msg["text"] = self.__msg["C"]
 
     # execute main-loop
