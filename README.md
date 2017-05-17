@@ -2,7 +2,7 @@
 ---
 # pwshare
 ## Introduction
- - windows下wifi热点软件，基于python3.6，现主要开发程序为gui-qt版本，命令行与gui-tk版本为阶段性成果
+ - windows下wifi热点软件，基于python3.6，现主要开发程序为gui-qt(PyQt5)版本，命令行与gui-tk版本为阶段性成果
 
 ## Information
  - brief  : windows下使用python建立wifi热点
@@ -22,10 +22,13 @@
  - 每次开启需要重新设置Internet连接共享（选去掉，再选上）
  - 管理员打开问题
  - gui-qt动态显示信息 
- - exe打包
 
 ---
 # Log
+## 20170517 - v1.2.10
+ - 移除cmd文件
+ - lbl_status同样显示返回的错误值
+ 
 ## 20170517 - v1.2.8
  - 增加json配置
  - 修复gui-tk打开与重启逻辑错误

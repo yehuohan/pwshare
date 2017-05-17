@@ -87,6 +87,7 @@ class MiniWS(qt.QDialog):
     def start_wifi(self):
         # create wifi with ssid and key
         msg = self.get_time() + self.tr("Starting Wifi......\n")
+        msg_error = self.get_time() + self.tr("Error: check Admin!")
         ret = self.__ws.create_wifi(s = self.txt_ssid.text(), k = self.txt_key.text())
         if 0 == ret[0]:
             # start the created wifi
@@ -102,15 +103,19 @@ class MiniWS(qt.QDialog):
                 self.btn_start.setText(self.tr("ReStart"))
                 self.status = self.status_code[1]
                 return True
+            else:
+                msg_error += self.get_time() + ret[1]
+        else:
+            msg_error += self.get_time() + ret[1]
         # failed to create or start wifi
-        msg = self.get_time() + self.tr("Error: check Admin!")
-        self.lbl_status.setText(msg)
+        self.lbl_status.setText(msg_error)
         return False
 
     @qt.pyqtSlot()
     def restart_wifi(self):
         # close wifi first
         msg = self.get_time() + self.tr("Closing Wifi......\n")
+        msg_error = self.get_time() + self.tr("Error: check Admin!")
         ret = self.__ws.close_wifi()
         if 0 == ret[0]:
             msg += self.get_time() + ret[1]
@@ -124,9 +129,14 @@ class MiniWS(qt.QDialog):
                     msg += self.get_time() + self.tr("Started Wifi")
                     self.lbl_status.setText(msg)
                     return True
+                else:
+                    msg_error += self.get_time() + ret[1]
+            else:
+                msg_error += self.get_time() + ret[1]
+        else:
+            msg_error += self.get_time() + ret[1]
         # failed to restart wifi
-        msg = self.get_time() + self.tr("Error: check Admin!")
-        self.lbl_status.setText(msg)
+        self.lbl_status.setText(msg_error)
         return False
 
     @qt.pyqtSlot()
@@ -135,6 +145,7 @@ class MiniWS(qt.QDialog):
         if self.status == self.status_code[1]:
             self.status = self.status_code[0]
             msg = self.get_time() + self.tr("Closing Wifi......\n")
+            msg_error = self.get_time() + self.tr("Error: check Admin!")
             ret = self.__ws.close_wifi()
             if 0 == ret[0]:
                 msg += self.get_time() + ret[1]
@@ -144,10 +155,14 @@ class MiniWS(qt.QDialog):
                 self.btn_start.released.connect(self.start_wifi)
                 self.btn_start.setText(self.tr("Start"))
                 return True
-            # failed to close wifi
-            msg = self.get_time() + self.tr("Error: check Admin!")
-            self.lbl_status.setText(msg)
-            return False
+            else:
+                msg_error += self.get_time() + ret[1]
+                # failed to close wifi
+                self.lbl_status.setText(msg_error)
+                return False
+        else:
+            self.lbl_status.setText(self.get_time() + self.tr("Start wifi first"))
+
 
     # get current time
     def get_time(self):
