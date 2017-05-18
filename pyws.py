@@ -10,6 +10,7 @@
 #===============================================================================
 # import
 #===============================================================================
+import os
 import subprocess
 import json
 
@@ -20,11 +21,32 @@ class WsJson:
     __filename = "pws.json"
     __main_key = None
     cf = None
+    cf_defalut = {
+        "pws.json": [
+            "WifiShare",
+            "Gui-qt",
+            "Gui-tk"
+        ],
+        "WifiShare": {
+            "ssid": "ubuntu",
+            "key": "uuuuuuuu"
+        },
+        "Gui-qt": {
+            "showpw": "True"
+        },
+        "Gui-tk": {}
+    }
 
     def __init__(self, index_key):
+        if False == os.path.exists(self.__filename):
+            self.make_default()
         self.__main_key = index_key
         with open(self.__filename, "r", encoding="utf-8") as load_f:
             self.cf = json.load(load_f)
+
+    def make_default(self):
+        with open(self.__filename, "w", encoding="utf-8") as dump_f:
+            json.dump(self.cf_defalut, dump_f)
 
     def get_value(self, key):
         return self.cf[self.__main_key][key]
