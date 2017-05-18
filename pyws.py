@@ -62,12 +62,17 @@ class WsJson:
 #===============================================================================
 class WifiShare:
     __wj = WsJson("WifiShare")
+    # hostednetwork status information
+    hn_status = {}
     ssid = None
     key = None
 
     def __init__(self):
         self.set_ssid(self.__wj.get_value("ssid"))
         self.set_key(self.__wj.get_value("key"))
+        self.get_hn_status()
+        if self.is_started():
+            self.set_ssid(self.get_ssidname())
 
     def set_ssid(self, s):
         if s!= "":
@@ -81,19 +86,74 @@ class WifiShare:
         self.set_ssid(s)
         self.set_key(k)
         self.save_set()
-        return subprocess.getstatusoutput("netsh wlan set hostednetwork mode=allow ssid={s} key={k}".format(s = self.ssid, k = self.key))
+        ret = subprocess.getstatusoutput("netsh wlan set hostednetwork mode=allow ssid={s} key={k}".format(s = self.ssid, k = self.key))
+        self.get_hn_status()
+        return ret
 
     def start_wifi(self):
-        return subprocess.getstatusoutput("netsh wlan start hostednetwork")
+        ret = subprocess.getstatusoutput("netsh wlan start hostednetwork")
+        self.get_hn_status()
+        return ret
 
     def stop_wifi(self):
-        return subprocess.getstatusoutput("netsh wlan stop hostednetwork")
+        ret = subprocess.getstatusoutput("netsh wlan stop hostednetwork")
+        self.get_hn_status()
+        return ret
 
     def close_wifi(self):
-        return subprocess.getstatusoutput("netsh wlan set hostednetwork mode=disallow")
+        ret = subprocess.getstatusoutput("netsh wlan set hostednetwork mode=disallow")
+        self.get_hn_status()
+        return ret
+
+    def show_wifi(self):
+        return subprocess.getstatusoutput("netsh wlan show hostednetwork")
+
+    # get hostednetwork show information
+    def get_hn_status(self):
+        ret = self.show_wifi()
+        ret_lst = [] 
+        if ret[0] == 0:
+            for ele in ret[1].replace(" ", "").split("\n"):
+                if 1 == ele.count(":"):
+                    ret_lst += [ele.split(":"),]
+            self.hn_status = dict(ret_lst)
+            return True
+        else:
+            return False
 
     # save the ssid and key to the json configuration
     def save_set(self):
         self.__wj.put_value("ssid", self.ssid)
         self.__wj.put_value("key", self.key)
 
+    #===========================================================================
+    # functions below only ofr windows in Chinese Lauguage
+    #===========================================================================
+
+    # check if wifi is started
+    def is_started(self):
+        if self.hn_status["状态"] == "已启动":
+            return True
+        else:
+            return False
+
+    # get ssid name if wifi is already started
+    def get_ssidname(self):
+        if self.is_started():
+            return self.hn_status["SSID名称"].replace('“', "").replace('”', "")
+
+    # get user(client) number
+    def get_user_num(self):
+        if self.is_started():
+            return self.hn_status["客户端数"]
+
+
+#===============================================================================
+# main-loop for test
+#===============================================================================
+if __name__ == "__main__":
+    ws = WifiShare()
+    print(ws.is_started())
+    print(ws.get_user_num())
+    print(ws.get_ssidname())
+    print(ws.hn_status)
