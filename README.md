@@ -1,13 +1,7 @@
 
 ---
 # pwshare
-## Introduction
  - windows下wifi热点软件，基于python3.6，现主要开发程序为gui-qt(PyQt5)版本，命令行与gui-tk版本为阶段性成果
-
-## Information
- - brief  : windows下使用python建立wifi热点
- - e-mail : 550034086@qq.com, yehuohan@gmail.com
- - author : yehuohan
 
 ---
 # FileList
@@ -23,8 +17,17 @@
  - 管理员打开问题
  - gui-qt动态显示信息 
 
+
 ---
-# Log
+# Contributors 
+ - yehuohan - yehuohan@gamil.com, 550034086@qq.com
+
+
+---
+# ChangeLog
+## 20170518 - v1.2.12
+ - 完状况README.md
+
 ## 20170518 - v1.2.11
  - 没有json配置文件时，自动创建
 
