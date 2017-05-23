@@ -5,11 +5,11 @@
 
 ---
 # FileList
- - WifiShare.py    : 使用netsh开启wifi热点的库
- - pwshare.py      : 命令行封装程序
- - pwshare-gui.pyw : tkinter-gui封装程序
- - pwshare-qt.pyw  : qt-gui封装程序
- - lang            : qt-gui语言文件
+ - WifiShare.py   : 使用netsh开启wifi热点的库
+ - pwshare.py     : 命令行封装程序
+ - pwshare-tk.pyw : tkinter-gui封装程序
+ - pwshare-qt.pyw : qt-gui封装程序
+ - lang           : qt-gui语言文件
  
 ---
 # TODO
@@ -23,6 +23,9 @@
 
 ---
 # ChangeLog
+## 20170523 - v1.2.15
+ - 在开启wifi后添加设置共享连接的提示
+
 ## 20170519 - v1.2.14
  - WifiShare添加显示Wifi状态等功能
  - 实现Wifi开启状态保存功能

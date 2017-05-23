@@ -1,7 +1,7 @@
 
 
 #===============================================================================
-# file   : pwshare-gui
+# file   : pwshare-tk
 # brief  : python wifi share with tk-gui in windows
 # e-mail : 550034086@qq.com, yehuohan@gmail.com
 # author : yehuohan

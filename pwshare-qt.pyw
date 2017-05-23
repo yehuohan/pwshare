@@ -105,6 +105,7 @@ class MiniWS(qt.QDialog):
                 # show message
                 msg += self.get_time() + ret[1]
                 msg += self.get_time() + self.tr("Wifi started\n")
+                msg += self.tr("\nPlease set share-connection again\n")
                 self.lbl_status.setText(msg)
                 self.btn_start.released.disconnect(self.start_wifi)
                 self.btn_start.released.connect(self.close_wifi)

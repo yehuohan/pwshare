@@ -19,12 +19,12 @@
         <translation>密码：</translation>
     </message>
     <message>
-        <location filename="../pwshare-qt.pyw" line="131"/>
+        <location filename="../pwshare-qt.pyw" line="132"/>
         <source>Start</source>
         <translation>开启</translation>
     </message>
     <message>
-        <location filename="../pwshare-qt.pyw" line="110"/>
+        <location filename="../pwshare-qt.pyw" line="111"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
@@ -61,7 +61,7 @@
         <translation type="obsolete">错误：检查是否为管理员！</translation>
     </message>
     <message>
-        <location filename="../pwshare-qt.pyw" line="122"/>
+        <location filename="../pwshare-qt.pyw" line="123"/>
         <source>Closing Wifi......
 </source>
         <translation>正关闭Wifi热点。。。
@@ -98,14 +98,14 @@
 </translation>
     </message>
     <message>
-        <location filename="../pwshare-qt.pyw" line="123"/>
+        <location filename="../pwshare-qt.pyw" line="124"/>
         <source>Error: check Admin!
 </source>
         <translation>错误：检查是否为管理员！
 </translation>
     </message>
     <message>
-        <location filename="../pwshare-qt.pyw" line="127"/>
+        <location filename="../pwshare-qt.pyw" line="128"/>
         <source>Wifi closed
 </source>
         <translation>已关闭Wifi热点
@@ -116,6 +116,22 @@
         <source>Wifi is Not closed last-time
 </source>
         <translation>上次Wifi热点未关闭
+</translation>
+    </message>
+    <message>
+        <location filename="../pwshare-qt.pyw" line="107"/>
+        <source>Please set share-connection again
+</source>
+        <translation type="obsolete">请再一次设置共享连接
+</translation>
+    </message>
+    <message>
+        <location filename="../pwshare-qt.pyw" line="107"/>
+        <source>
+Please set share-connection again
+</source>
+        <translation>
+请再一次设置共享连接
 </translation>
     </message>
 </context>
