@@ -14,6 +14,7 @@
 
 # Make-exe
  - 按下列步骤生成exe文件
+
 ```
 # 先使用pyinstaller生成exe
 cd pwshare
@@ -27,6 +28,7 @@ pyinstaller --uac-admin -w pyshare-qt.pyw
  - gui-qt添加手动选择所共享的连接
  - gui-qt中英文切换选项
  - gui-qt显示wifi连接用户数量
+ - gui-qt通过qt更换图标
 
 
 ---
