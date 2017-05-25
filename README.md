@@ -36,6 +36,9 @@ pyinstaller --uac-admin -w pyshare-qt.pyw
 
 ---
 # ChangeLog
+## 20170525 - v1.3.19
+ - 添加LICENSE到远程仓库
+
 ## 20170525 - v1.3.18
  - 添加c++ ws.dll库，并使用python调用ws.dll，实现自动管理共享连接
  - 更改pwshare.py，使用新版WifiShare
