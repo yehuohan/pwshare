@@ -1,0 +1,14 @@
+
+
+# .gitignore for pwshare
+
+/*
+!/.gitignore
+!/*.md
+!/*.py
+!/*.pyw
+!/*.cmd
+!/*.json
+
+!/lang
+!/ws

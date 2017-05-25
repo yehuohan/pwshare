@@ -13,7 +13,7 @@
 import sys
 import cmd
 import subprocess
-import WifiShare
+from pyws import WifiShare
 
 
 #===============================================================================
@@ -42,7 +42,7 @@ class WSCLI(cmd.Cmd):
     # class user command and variable
     #===========================================================================
 
-    __ws = WifiShare.WifiShare()
+    __ws = WifiShare()
 
     # wifi share command: set
     def do_set(self, arg):
@@ -61,17 +61,14 @@ class WSCLI(cmd.Cmd):
         else:
             self.__ws.create_wifi(arg)
 
-    def do_close(self, arg):
-        self.__ws.close_wifi()
-
     # wifi share command: wifi
     def do_wifi(self, arg):
         if arg == "start":
             self.__ws.start_wifi()
         elif arg == "stop":
             self.__ws.stop_wifi()
-        elif arg == "restart":
-            self.__ws.restart_wifi()
+        elif arg == "close":
+            self.__ws.close_wifi()
         else:
             print("Unkown command:{}".format(arg))
 
@@ -83,17 +80,12 @@ set [ssid=<name>] [key=<code>]
     - ssid : set the wifi name
     - key  : set the wifi key
             """)
-        elif arg == "close":
-            print("""
-close 
-    : close the wifi and need to set again
-            """)
         elif arg == "wifi":
             print("""
 wifi <mode>:
     - mode 'start'   : start the wifi had set
     - mode 'stop'    : stop the wifi but can be started again
-    - mode 'restart' : start wifi after close and create 
+    - mode 'close'   : close the wifi and need to set again
             """)
         elif arg == "quit":
             print("""
@@ -104,7 +96,6 @@ quit
             print("""
 Command:
     - set [ssid=<ssid>] [ssid=<key>]
-    - close
     - wifi <mode>
     - quit
             """)

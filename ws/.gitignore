@@ -1,0 +1,19 @@
+
+# .gitignore for ws-dll
+
+/*
+!/*.gitignore
+!/*.sln
+
+!/ws
+/ws/*
+!/ws/*.cpp
+!/ws/*.h
+!/ws/*.vcxproj
+!/ws/*.vcxproj.filters
+
+!/ws_test
+/ws_test/*
+!/ws_test/*.vcxproj
+!/ws_test/*.vcxproj.filters
+

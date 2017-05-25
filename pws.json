@@ -1,1 +1,1 @@
-{"pws.json": ["WifiShare", "Gui-qt", "Gui-tk"], "WifiShare": {"ssid": "ubuntu", "key": "uuuuuuuu"}, "Gui-qt": {"showpw": "True"}, "Gui-tk": {}}
+{"pws.json": ["WifiShare", "Gui-qt", "Gui-tk"], "WifiShare": {"ssid": "arch", "key": "uuuuuuuu", "eth_name": "\u4ee5\u592a\u7f51"}, "Gui-qt": {"showpw": "True"}, "Gui-tk": {}}

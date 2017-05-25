@@ -5,15 +5,28 @@
 
 ---
 # FileList
- - WifiShare.py   : 使用netsh开启wifi热点的库
+ - pyws.py        : 使用netsh开启wifi热点的库
  - pwshare.py     : 命令行封装程序
  - pwshare-tk.pyw : tkinter-gui封装程序
  - pwshare-qt.pyw : qt-gui封装程序
  - lang           : qt-gui语言文件
+ - ws			  : ws.dll工程，用于管理连接共享
+
+# Make-exe
+ - 按下列步骤生成exe文件
+```
+# 先使用pyinstaller生成exe
+cd pwshare
+pyinstaller --uac-admin -w pyshare-qt.pyw
+
+# 然后将lang和ws工程生成的ws.dll复制到./dist/pwshare-qt下
+```
  
 ---
 # TODO
- - 每次开启需要重新设置Internet连接共享（选去掉，再选上）
+ - gui-qt添加手动选择所共享的连接
+ - gui-qt中英文切换选项
+ - gui-qt显示wifi连接用户数量
 
 
 ---
@@ -23,6 +36,11 @@
 
 ---
 # ChangeLog
+## 20170525 - v1.3.18
+ - 添加c++ ws.dll库，并使用python调用ws.dll，实现自动管理共享连接
+ - 更改pwshare.py，使用新版WifiShare
+ - 将.gitignore文件添加到远程仓库
+ 
 ## 20170523 - v1.2.15
  - 在开启wifi后添加设置共享连接的提示
 
@@ -31,7 +49,7 @@
  - 实现Wifi开启状态保存功能
 
 ## 20170518 - v1.2.12
- - 完状况README.md
+ - 完善README.md
 
 ## 20170518 - v1.2.11
  - 没有json配置文件时，自动创建
