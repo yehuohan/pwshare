@@ -23,6 +23,9 @@ class MiniWS(qt.QDialog):
     btn_start = None
     lbl_status = None
 
+    #  cmb_connection = None
+    #  cmb_lang = None
+
     # Wifi-Share class
     __ws = WifiShare()
     # json configuration
@@ -34,6 +37,7 @@ class MiniWS(qt.QDialog):
         # init MiniWS
         self.setFont(qt.QFont("Cousine", 11))
         self.setWindowTitle(self.tr("Mini WifiShare"))
+        self.setWindowIcon(qt.QIcon("wifi.ico"))
         self.resize(300, 370)
         self.setFixedWidth(280)
         self.init_ui()

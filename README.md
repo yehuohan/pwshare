@@ -18,7 +18,7 @@
 ```
 # 先使用pyinstaller生成exe
 cd pwshare
-pyinstaller --uac-admin -w pyshare-qt.pyw
+pyinstaller --uac-admin -w --icon=./wifi.ico pyshare-qt.pyw
 
 # 然后将lang和ws工程生成的ws.dll复制到./dist/pwshare-qt下
 ```
@@ -28,7 +28,6 @@ pyinstaller --uac-admin -w pyshare-qt.pyw
  - gui-qt添加手动选择所共享的连接
  - gui-qt中英文切换选项
  - gui-qt显示wifi连接用户数量
- - gui-qt通过qt更换图标
 
 
 ---
@@ -38,6 +37,9 @@ pyinstaller --uac-admin -w pyshare-qt.pyw
 
 ---
 # ChangeLog
+## 20170526 - v1.3.20
+ - 添加gui-qt图标
+ 
 ## 20170525 - v1.3.19
  - 添加LICENSE到远程仓库
 

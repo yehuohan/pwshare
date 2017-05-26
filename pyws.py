@@ -160,7 +160,8 @@ class WifiShare:
     def create_wifi(self, s = "", k = ""):
         self.set_ssid(s)
         self.set_key(k)
-        self.__save_set()
+        self.__wj.put_value("ssid", self.ssid)
+        self.__wj.put_value("key", self.key)
         ret = subprocess.getstatusoutput("netsh wlan set hostednetwork mode=allow ssid={s} key={k}".format(s = self.ssid, k = self.key))
         self.__get_hn_status()
         return ret
@@ -170,6 +171,7 @@ class WifiShare:
         self.__get_hn_status()
         self.__wd.close_connection_sharing(self.eth_name)
         self.__wd.start_connection_sharing(self.eth_name)
+        self.__wj.put_value("eth_name", self.eth_name)
         return ret
 
     def stop_wifi(self):
@@ -208,10 +210,6 @@ class WifiShare:
         else:
             return False
 
-    # save the ssid and key to the json configuration
-    def __save_set(self):
-        self.__wj.put_value("ssid", self.ssid)
-        self.__wj.put_value("key", self.key)
 
     #===========================================================================
     # functions below only for windows in Chinese Lauguage
