@@ -44,6 +44,9 @@ pyinstaller --uac-admin -w --icon=./res/wifi.ico pyshare-qt.pyw
 ---
 # ChangeLog
 
+## 20170527 - v1.3.26
+ - 实现gui-qt托盘图标
+ 
 ## 20170527 - v1.3.25
  - 实现手动选择所共享的连接
  - 分离qt-gui界面类，实现动态切换语言

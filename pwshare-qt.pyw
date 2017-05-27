@@ -21,9 +21,11 @@ from pws import WifiShare, WsJson
 #===============================================================================
 class ui_pwshare(qt.QObject):
     def setup_ui(self, dlg):
+        self.setParent(dlg)
         # Dialog setting
         dlg.setFont(qt.QFont("Cousine", 11))
         dlg.setWindowIcon(qt.QIcon(":/res/res/dlg_wifi.png"))
+        dlg.setWindowFlags(qt.Qt.WindowMinimizeButtonHint | qt.Qt.WindowCloseButtonHint)
         dlg.resize(350, 390)
         dlg.setFixedWidth(300)
 
@@ -71,7 +73,15 @@ class ui_pwshare(qt.QObject):
                 color            : green;
                 font-weight      : bold;
                 """)
-        
+
+        # system tray-icon
+        self.act_quit = qt.QAction(dlg)
+        self.tray_menu = qt.QMenu(dlg)
+        self.tray_menu.addAction(self.act_quit)
+        self.tray_icon = qt.QSystemTrayIcon(qt.QIcon(":/res/res/dlg_wifi.png"), dlg)
+        self.tray_icon.setVisible(True)
+        self.tray_icon.setContextMenu(self.tray_menu)
+ 
         # set text of ctrl
         self.set_translator(dlg)
 
@@ -96,6 +106,7 @@ class ui_pwshare(qt.QObject):
         self.lbl_key.setText(self.tr("KEY:"))
         self.lbl_connection.setText(self.tr("CONN:"))
         self.lbl_lang.setText(self.tr("LANG:"))
+        self.act_quit.setText(self.tr("Quit"))
 
     def set_btn_start_text(self, flg):
         if True == flg:
@@ -152,7 +163,6 @@ class pwshare(qt.QDialog):
         # start or close button
         self.ui.set_btn_start_text(self.__ws.is_started())
 
-
     def create_connection(self):
         # start or close wifi
         if self.__ws.is_started():
@@ -167,6 +177,16 @@ class pwshare(qt.QDialog):
         self.ui.cmb_lang.currentTextChanged[str].connect(self.switch_lang)
         # switch connection
         self.ui.cmb_connection.currentTextChanged[str].connect(lambda name:self.__ws.set_eth_name(name))
+        # tray-icon
+        self.ui.tray_icon.activated[qt.QSystemTrayIcon.ActivationReason].connect(self.tray_icon_active)
+        self.ui.act_quit.triggered.connect(lambda:self.close())
+
+    # tray-icon activated slot
+    @qt.pyqtSlot(qt.QSystemTrayIcon.ActivationReason)
+    def tray_icon_active(self, reason):
+        if reason == qt.QSystemTrayIcon.Trigger or reason == qt.QSystemTrayIcon.DoubleClick:
+            self.showNormal()
+            self.setFocus()
 
     # switch language
     @qt.pyqtSlot(str)
@@ -223,7 +243,6 @@ class pwshare(qt.QDialog):
         self.ui.txt_status.setPlainText(msg_error)
         return False
 
-
     # get current time
     def get_time(self):
         return "[" + qt.QTime.currentTime().toString() + "] "
@@ -235,6 +254,11 @@ class pwshare(qt.QDialog):
         else:
             self.__wj.put_value("showpw", "False")
         return True 
+
+    # change event: hide when minimized
+    def changeEvent(self, event):
+        if event.type() == qt.QEvent.WindowStateChange and self.isMinimized():
+            self.hide()
 
 
 #===============================================================================
