@@ -17,14 +17,51 @@ import ctypes
 
 
 #===============================================================================
+# JsonBase class
+#===============================================================================
+class JsonBase:
+    __filename = None
+    cf = None
+
+    def __init__(self, filename):
+        self.__filename = filename
+
+    # return existence of json file
+    def is_json_exist(self):
+        return os.path.exists(self.__filename)
+
+    # create defalut .json
+    def make_default(self, settings = {}):
+        with open(self.__filename, "w", encoding="utf-8") as dump_f:
+            json.dump(settings, dump_f)
+
+    # read json 
+    def open_json(self):
+        with open(self.__filename, "r", encoding="utf-8") as json_f:
+            self.cf = json.load(json_f)
+
+    # get key-value 
+    def get_kv(self, key):
+        return self.cf[key]
+
+    # put key-value
+    def put_kv(self, key, value):
+        self.cf[key] = value
+
+    # write json
+    def write_json(self):
+        with open(self.__filename, "w", encoding="utf-8") as dump_f:
+            json.dump(self.cf, dump_f)
+
+
+#===============================================================================
 # WsJson class
 #===============================================================================
-class WsJson:
+class WsJson(JsonBase):
     __filename = "pws.json"
     __main_key = None
 
     # all settings in .json will set to cf
-    cf = None
     cf_defalut = {
         "pws.json": [
             "WifiShare",
@@ -32,27 +69,23 @@ class WsJson:
             "Gui-tk"
         ],
         "WifiShare": {
-            "ssid": "ubuntu",
-            "key": "uuuuuuuu",
-            "eth_name":"以太网"
+            "ssid"     : "ubuntu",
+            "key"      : "uuuuuuuu",
+            "eth_name" : "以太网"
         },
         "Gui-qt": {
-            "showpw": "True"
+            "showpw"   : "True",
+            "language" : "lang\\chinese.qm"
         },
         "Gui-tk": {}
     }
 
     def __init__(self, index_key):
-        if False == os.path.exists(self.__filename):
-            self.make_default()
         self.__main_key = index_key
-        with open(self.__filename, "r", encoding="utf-8") as load_f:
-            self.cf = json.load(load_f)
-
-    # create .json with cf_default if there is no .json file
-    def make_default(self):
-        with open(self.__filename, "w", encoding="utf-8") as dump_f:
-            json.dump(self.cf_defalut, dump_f)
+        super(WsJson, self).__init__(self.__filename)
+        if super().is_json_exist() == False:
+            super().make_default(self.cf_defalut)
+        super().open_json()
 
     # get key-value in main_key
     def get_value(self, key):
@@ -60,9 +93,8 @@ class WsJson:
 
     # put key-value in main_key
     def put_value(self, key, value):
-        with open(self.__filename, "w", encoding="utf-8") as dump_f:
-            self.cf[self.__main_key][key] = value
-            json.dump(self.cf, dump_f)
+        self.cf[self.__main_key][key] = value
+        super().write_json()
 
 
 #===============================================================================
@@ -160,6 +192,7 @@ class WifiShare:
     def create_wifi(self, s = "", k = ""):
         self.set_ssid(s)
         self.set_key(k)
+        # save ssid and key to json in every creating-wifi time
         self.__wj.put_value("ssid", self.ssid)
         self.__wj.put_value("key", self.key)
         ret = subprocess.getstatusoutput("netsh wlan set hostednetwork mode=allow ssid={s} key={k}".format(s = self.ssid, k = self.key))
@@ -171,6 +204,7 @@ class WifiShare:
         self.__get_hn_status()
         self.__wd.close_connection_sharing(self.eth_name)
         self.__wd.start_connection_sharing(self.eth_name)
+        # save eth_name to json in every sharing time
         self.__wj.put_value("eth_name", self.eth_name)
         return ret
 
@@ -229,6 +263,7 @@ class WifiShare:
 
     # get user(client) number
     def get_user_num(self):
+        self.__get_hn_status()      # update user-num first
         if self.is_started():
             return self.hn_status["客户端数"]
 

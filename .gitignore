@@ -11,7 +11,9 @@
 !/*.pyw
 !/*.cmd
 !/*.json
-!/*.ico
+!/*.qrc
+!/*.ui
 
+!/res
 !/lang
 !/ws

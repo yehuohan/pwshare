@@ -13,7 +13,7 @@
 import sys
 import cmd
 import subprocess
-from pyws import WifiShare
+from pws import WifiShare
 
 
 #===============================================================================

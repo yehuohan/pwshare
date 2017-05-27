@@ -10,97 +10,179 @@
 # import
 #===============================================================================
 import sys
+import glob
 import PyQt5.Qt as qt
-from pyws import WifiShare, WsJson
+import pwshare_rc
+from pws import WifiShare, WsJson
+
 
 #===============================================================================
-# MiniWS class : mini wifi share gui-program
+# ui_pwshare class : ui of pwshare
 #===============================================================================
-class MiniWS(qt.QDialog):
-    # qt ctrl
-    txt_ssid = None
-    txt_key = None
-    btn_start = None
-    lbl_status = None
+class ui_pwshare(qt.QObject):
+    def setup_ui(self, dlg):
+        # Dialog setting
+        dlg.setFont(qt.QFont("Cousine", 11))
+        dlg.setWindowIcon(qt.QIcon(":/res/res/dlg_wifi.png"))
+        dlg.resize(350, 390)
+        dlg.setFixedWidth(300)
 
-    #  cmb_connection = None
-    #  cmb_lang = None
+        # create ctrl
+        self.lbl_ssid = qt.QLabel(dlg)
+        self.lbl_key = qt.QLabel(dlg)
+        self.txt_ssid = qt.QLineEdit(dlg)
+        self.txt_key = qt.QLineEdit(dlg)
+        self.btn_eye = qt.QPushButton(dlg)
+        self.lbl_connection = qt.QLabel(dlg)
+        self.cmb_connection = qt.QComboBox(dlg)
+        self.lbl_lang = qt.QLabel(dlg)
+        self.cmb_lang = qt.QComboBox(dlg)
+        self.btn_start = qt.QPushButton(dlg)
+        self.txt_status = qt.QPlainTextEdit(dlg)
 
-    # Wifi-Share class
+        # Size
+        self.txt_ssid.setFixedHeight(32)
+        self.txt_key.setFixedHeight(32)
+        self.btn_eye.setFixedSize(32,32)
+        self.cmb_connection.setFixedHeight(32)
+        self.cmb_lang.setFixedHeight(32)
+        self.btn_start.setFixedHeight(32)
+
+        # StyleSheet
+        self.btn_eye.setCheckable(True)
+        self.btn_eye.setStyleSheet(
+                """QPushButton{
+                    border-radius : 6px;
+                    border        : 2px outset rgb(180,180,180);
+                    image         : url(:/res/res/btn_eye_hide.png);
+                }
+                QPushButton:pressed{
+                    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                        stop: 0 #dadbde, stop: 1 #f6f7fa);
+                }
+                QPushButton:checked{
+                    image        : url(:/res/res/btn_eye_show.png);
+                    border-style : inset;
+                }""")
+        self.txt_status.setReadOnly(True)
+        self.txt_status.setStyleSheet(
+                """
+                background-color : rgb(200,200,200);
+                color            : green;
+                font-weight      : bold;
+                """)
+        
+        # set text of ctrl
+        self.set_translator(dlg)
+
+        # GridLayout setting
+        self.grid = qt.QGridLayout(dlg)
+        self.grid.addWidget(self.lbl_ssid, 0, 0)
+        self.grid.addWidget(self.txt_ssid, 0, 1, 1, 2)
+        self.grid.addWidget(self.lbl_key, 1, 0)
+        self.grid.addWidget(self.txt_key, 1, 1)
+        self.grid.addWidget(self.btn_eye, 1, 2)
+        self.grid.addWidget(self.lbl_connection, 2, 0)
+        self.grid.addWidget(self.cmb_connection, 2, 1, 1, 2)
+        self.grid.addWidget(self.lbl_lang, 3, 0)
+        self.grid.addWidget(self.cmb_lang, 3, 1, 1, 2)
+        self.grid.addWidget(self.btn_start, 4, 0, 1, 3)
+        self.grid.addWidget(self.txt_status, 5, 0, 1, 3)
+
+
+    def set_translator(self, dlg):
+        dlg.setWindowTitle(self.tr("PyWifiShare"))
+        self.lbl_ssid.setText(self.tr("SSID:"))
+        self.lbl_key.setText(self.tr("KEY:"))
+        self.lbl_connection.setText(self.tr("CONN:"))
+        self.lbl_lang.setText(self.tr("LANG:"))
+
+    def set_btn_start_text(self, flg):
+        if True == flg:
+            self.btn_start.setText(self.tr("Close"))
+        else:
+            self.btn_start.setText(self.tr("Start"))
+
+
+#===============================================================================
+# pwshare class : wifi share gui-program
+#===============================================================================
+class pwshare(qt.QDialog):
+    ui = ui_pwshare()
+    translator = qt.QTranslator()
     __ws = WifiShare()
-    # json configuration
     __wj = WsJson("Gui-qt")
 
+    # initial
     def __init__(self, parent = None):
-        super(MiniWS, self).__init__(parent)
+        super(pwshare, self).__init__(parent)
+        self.translator.load(self.__wj.get_value("language"))
+        qt.qApp.installTranslator(self.translator)
+        self.ui.setup_ui(self)
+        self.init_data()
+        self.create_connection()
 
-        # init MiniWS
-        self.setFont(qt.QFont("Cousine", 11))
-        self.setWindowTitle(self.tr("Mini WifiShare"))
-        self.setWindowIcon(qt.QIcon("wifi.ico"))
-        self.resize(300, 370)
-        self.setFixedWidth(280)
-        self.init_ui()
-
-    # init ui of main window
-    def init_ui(self):
-        # create ctrl
-        lbl_ssid = qt.QLabel(self.tr("SSID: "), self)
-        lbl_key = qt.QLabel(self.tr("KEY: "), self)
-        self.lbl_status = qt.QLabel(self.get_time()+self.tr("Ready(Must be Admin)\n"),self)
-        if self.__ws.is_started():
-            self.lbl_status.setText(self.lbl_status.text()+self.get_time()+self.tr("Wifi is Not closed last-time\n"))
-        self.lbl_status.setAlignment(qt.Qt.AlignLeft) 
-        self.lbl_status.setWordWrap(True)
-        self.lbl_status.setStyleSheet("""
-                                    color: darkred;
-                                    background-color: lightblue
-                                    """)
-
-        self.txt_ssid = qt.QLineEdit(self)
-        self.txt_key = qt.QLineEdit(self)
-        self.txt_ssid.setText(self.__ws.ssid)
-        self.txt_key.setText(self.__ws.key)
-
-        if self.__ws.is_started():
-            self.btn_start = qt.QPushButton(self.tr("Close"), self)
-        else:
-            self.btn_start = qt.QPushButton(self.tr("Start"), self)
-
-        chk_showpw = qt.QCheckBox(self.tr("Show Passwd"), self)
+    def init_data(self):
+        # set ssid and key value
+        self.ui.txt_ssid.setText(self.__ws.ssid)
+        self.ui.txt_key.setText(self.__ws.key)
+        # show password or not
         if self.__wj.get_value("showpw") == "True":
-            chk_showpw.setChecked(True)
-            self.txt_key.setEchoMode(qt.QLineEdit.Normal) 
+            self.ui.btn_eye.setChecked(True)
+            self.ui.txt_key.setEchoMode(qt.QLineEdit.Normal) 
         elif self.__wj.get_value("showpw") == "False":
-            chk_showpw.setChecked(False)
-            self.txt_key.setEchoMode(qt.QLineEdit.Password)
-
-        # grid-layout
-        grid = qt.QGridLayout(self)
-        grid.addWidget(lbl_ssid, 0, 0)
-        grid.addWidget(lbl_key, 1, 0)
-        grid.addWidget(self.txt_ssid, 0, 1)
-        grid.addWidget(self.txt_key, 1, 1)
-        grid.addWidget(chk_showpw, 2, 0, 1, 2)
-        grid.addWidget(self.btn_start, 3, 0, 1, 2)
-        grid.addWidget(self.lbl_status, 4, 0, 1, 2)
-
-        # create connetion
+            self.ui.btn_eye.setChecked(False)
+            self.ui.txt_key.setEchoMode(qt.QLineEdit.Password)
+        # status information
+        self.ui.txt_status.setPlainText(self.get_time()+self.tr("Ready(Must be Admin)\n"))
         if self.__ws.is_started():
-            self.btn_start.released.connect(self.close_wifi)
-        else:
-            self.btn_start.released.connect(self.start_wifi)
-        toggle_echomode = lambda flg : self.txt_key.setEchoMode(qt.QLineEdit.Normal) if flg else self.txt_key.setEchoMode(qt.QLineEdit.Password)
-        chk_showpw.toggled[bool].connect(
-                lambda flg : self.save_showpw(flg) and toggle_echomode(flg))
+            self.ui.txt_status.setPlainText(self.ui.txt_status.toPlainText()+self.get_time()+self.tr("Wifi is Not closed last time\n"))
+        # language selection
+        lang_list = glob.glob("lang/*.qm")
+        for qm in lang_list:
+            self.ui.cmb_lang.addItem(qm)
+            if qm == self.__wj.get_value("language"):
+                self.ui.cmb_lang.setCurrentText(qm)
+        # ethernet connection
+        conn_list = self.__ws.get_connections()
+        for name in conn_list:
+            self.ui.cmb_connection.addItem(name)
+            if name == self.__ws.eth_name:
+                self.ui.cmb_connection.setCurrentText(name)
+        # start or close button
+        self.ui.set_btn_start_text(self.__ws.is_started())
 
-    # slot function
+
+    def create_connection(self):
+        # start or close wifi
+        if self.__ws.is_started():
+            self.ui.btn_start.released.connect(self.close_wifi)
+        else:
+            self.ui.btn_start.released.connect(self.start_wifi)
+        # show password
+        toggle_echomode = lambda flg : self.ui.txt_key.setEchoMode(qt.QLineEdit.Normal) if flg else self.ui.txt_key.setEchoMode(qt.QLineEdit.Password)
+        self.ui.btn_eye.toggled[bool].connect(
+                lambda flg : self.save_showpw(flg) and toggle_echomode(flg))
+        # switch language
+        self.ui.cmb_lang.currentTextChanged[str].connect(self.switch_lang)
+        # switch connection
+        self.ui.cmb_connection.currentTextChanged[str].connect(lambda name:self.__ws.set_eth_name(name))
+
+    # switch language
+    @qt.pyqtSlot(str)
+    def switch_lang(self, lang):
+        self.translator.load(lang)
+        qt.qApp.installTranslator(self.translator)
+        self.ui.set_translator(self)
+        self.ui.set_btn_start_text(self.__ws.is_started())
+        self.__wj.put_value("language", lang)
+
     @qt.pyqtSlot()
     def start_wifi(self):
         # create wifi with ssid and key
         msg = self.get_time() + self.tr("Starting Wifi......\n")
         msg_error = self.get_time() + self.tr("Error: check Admin!\n")
-        ret = self.__ws.create_wifi(s = self.txt_ssid.text(), k = self.txt_key.text())
+        ret = self.__ws.create_wifi(s = self.ui.txt_ssid.text(), k = self.ui.txt_key.text())
         if 0 == ret[0]:
             # start the created wifi
             msg += self.get_time() + ret[1]
@@ -109,17 +191,17 @@ class MiniWS(qt.QDialog):
                 # show message
                 msg += self.get_time() + ret[1]
                 msg += self.get_time() + self.tr("Wifi started\n")
-                self.lbl_status.setText(msg)
-                self.btn_start.released.disconnect(self.start_wifi)
-                self.btn_start.released.connect(self.close_wifi)
-                self.btn_start.setText(self.tr("Close"))
+                self.ui.txt_status.setPlainText(msg)
+                self.ui.btn_start.released.disconnect(self.start_wifi)
+                self.ui.btn_start.released.connect(self.close_wifi)
+                self.ui.set_btn_start_text(True)
                 return True
             else:
                 msg_error += self.get_time() + ret[1]
         else:
             msg_error += self.get_time() + ret[1]
         # failed to create or start wifi
-        self.lbl_status.setText(msg_error)
+        self.ui.txt_status.setPlainText(msg_error)
         return False
 
     @qt.pyqtSlot()
@@ -130,16 +212,16 @@ class MiniWS(qt.QDialog):
         if 0 == ret[0]:
             msg += self.get_time() + ret[1]
             msg += self.get_time() + self.tr("Wifi closed\n")
-            self.lbl_status.setText(msg)
-            self.btn_start.released.disconnect(self.close_wifi)
-            self.btn_start.released.connect(self.start_wifi)
-            self.btn_start.setText(self.tr("Start"))
+            self.ui.txt_status.setPlainText(msg)
+            self.ui.btn_start.released.disconnect(self.close_wifi)
+            self.ui.btn_start.released.connect(self.start_wifi)
+            self.ui.set_btn_start_text(False)
             return True
         else:
             msg_error += self.get_time() + ret[1]
-            # failed to close wifi
-            self.lbl_status.setText(msg_error)
-            return False
+        # failed to close wifi
+        self.ui.txt_status.setPlainText(msg_error)
+        return False
 
 
     # get current time
@@ -154,21 +236,14 @@ class MiniWS(qt.QDialog):
             self.__wj.put_value("showpw", "False")
         return True 
 
-    # event
-    def keyReleaseEvent(self, event):
-        if qt.Qt.Key_Escape == event.key():
-            self.close()
-
 
 #===============================================================================
 # main-loop
 #===============================================================================
 if __name__ == "__main__":
-    trans = qt.QTranslator()
-    trans.load("lang/zh_CN")
     app = qt.QApplication(sys.argv)
-    app.installTranslator(trans)
-    mws = MiniWS()
-    mws.show()
+    app.setStyle(qt.QStyleFactory.create("fusion"));
+    ws = pwshare()
+    ws.show()
     app.exec()
 

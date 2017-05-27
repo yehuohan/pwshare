@@ -13,7 +13,7 @@
 #===============================================================================
 import sys
 import tkinter as tk
-from pyws import WifiShare
+from pws import WifiShare
 
 #===============================================================================
 # MiniWS class : mini wifi share gui-program

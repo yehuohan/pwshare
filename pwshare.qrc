@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="res">
+    <file>res/btn_eye_hide.png</file>
+    <file>res/btn_eye_show.png</file>
+    <file>res/dlg_wifi.png</file>
+  </qresource>
+</RCC>

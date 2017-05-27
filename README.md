@@ -1,33 +1,39 @@
 
 ---
 # pwshare
- - windows下wifi热点软件，基于python3.6，现主要开发程序为gui-qt(PyQt5)版本，命令行与gui-tk版本为阶段性成果
+ - windows下wifi热点软件，基于python3.6，现主要开发程序为gui-qt(PyQt5)版本（命令行与gui-tk版本为阶段性成果，不再更新）。
 
 ---
 # FileList
- - pyws.py        : 使用netsh开启wifi热点的库
- - pwshare.py     : 命令行封装程序
- - pwshare-tk.pyw : tkinter-gui封装程序
+ - pws.py         : 开启wifi热点的库
+ - pwshare-cli.py : 命令行封装程序(不再更新)
+ - pwshare-tk.pyw : tkinter-gui封装程序(不再更新)
  - pwshare-qt.pyw : qt-gui封装程序
+ - pwshare.ui	  : qt-gui界面（暂时未用）
+ - pwshare.qrc    : qt-gui资源文件
  - lang           : qt-gui语言文件
+ - res			  : 资源存放目录
  - ws			  : ws.dll工程，用于管理连接共享
 
 # Make-exe
  - 按下列步骤生成exe文件
 
 ```
+# 生成资源文件
+cd pwshare
+pyrcc5 -o pwshare_rc.py pwshare.qrc
+
 # 先使用pyinstaller生成exe
 cd pwshare
-pyinstaller --uac-admin -w --icon=./wifi.ico pyshare-qt.pyw
+pyinstaller --uac-admin -w --icon=./res/wifi.ico pyshare-qt.pyw
 
 # 然后将lang和ws工程生成的ws.dll复制到./dist/pwshare-qt下
 ```
  
 ---
 # TODO
- - gui-qt添加手动选择所共享的连接
- - gui-qt中英文切换选项
- - gui-qt显示wifi连接用户数量
+ - gui-qt动态信息显示
+ - gui-qt显示wifi连接用户数量(QTimer)
 
 
 ---
@@ -37,6 +43,14 @@ pyinstaller --uac-admin -w --icon=./wifi.ico pyshare-qt.pyw
 
 ---
 # ChangeLog
+
+## 20170527 - v1.3.25
+ - 实现手动选择所共享的连接
+ - 分离qt-gui界面类，实现动态切换语言
+ - 优化Json配置类的结构
+ - WifiShare类每次获取用户数量，都对hostednetwork status进行一次更新
+ - 更改.py文件名称
+ 
 ## 20170526 - v1.3.20
  - 添加gui-qt图标
  
