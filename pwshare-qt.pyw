@@ -51,6 +51,18 @@ class ui_pwshare(qt.QObject):
         self.btn_start.setFixedHeight(32)
 
         # StyleSheet
+        self.txt_ssid.setStyleSheet(
+                """QLineEdit{
+                    border-width: 1px;
+                    border-radius: 5px;
+                    border:1px solid gray;
+                    color: black;
+                }
+                QLineEdit:hover{
+                    border:1px solid rgb(70, 200, 50);
+                }""")
+        self.txt_key.setClearButtonEnabled(True)
+        self.txt_key.setStyleSheet(self.txt_ssid.styleSheet())
         self.btn_eye.setCheckable(True)
         self.btn_eye.setStyleSheet(
                 """QPushButton{
@@ -102,6 +114,7 @@ class ui_pwshare(qt.QObject):
 
     def set_translator(self, dlg):
         dlg.setWindowTitle(self.tr("PyWifiShare"))
+        self.txt_key.setPlaceholderText(self.tr("PassWord"))
         self.lbl_ssid.setText(self.tr("SSID:"))
         self.lbl_key.setText(self.tr("KEY:"))
         self.lbl_connection.setText(self.tr("CONN:"))
