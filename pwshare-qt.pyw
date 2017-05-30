@@ -34,7 +34,7 @@ class ui_pwshare(qt.QObject):
         self.lbl_key = qt.QLabel(dlg)
         self.txt_ssid = qt.QLineEdit(dlg)
         self.txt_key = qt.QLineEdit(dlg)
-        self.btn_eye = qt.QPushButton(dlg)
+        self.act_eye = qt.QAction(dlg)
         self.lbl_connection = qt.QLabel(dlg)
         self.cmb_connection = qt.QComboBox(dlg)
         self.lbl_lang = qt.QLabel(dlg)
@@ -45,7 +45,6 @@ class ui_pwshare(qt.QObject):
         # Size
         self.txt_ssid.setFixedHeight(32)
         self.txt_key.setFixedHeight(32)
-        self.btn_eye.setFixedSize(32,32)
         self.cmb_connection.setFixedHeight(32)
         self.cmb_lang.setFixedHeight(32)
         self.btn_start.setFixedHeight(32)
@@ -61,23 +60,11 @@ class ui_pwshare(qt.QObject):
                 QLineEdit:hover{
                     border:1px solid rgb(70, 200, 50);
                 }""")
+        self.txt_key.addAction(self.act_eye, qt.QLineEdit.TrailingPosition)
         self.txt_key.setClearButtonEnabled(True)
         self.txt_key.setStyleSheet(self.txt_ssid.styleSheet())
-        self.btn_eye.setCheckable(True)
-        self.btn_eye.setStyleSheet(
-                """QPushButton{
-                    border-radius : 6px;
-                    border        : 2px outset rgb(180,180,180);
-                    image         : url(:/res/res/btn_eye_hide.png);
-                }
-                QPushButton:pressed{
-                    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                        stop: 0 #dadbde, stop: 1 #f6f7fa);
-                }
-                QPushButton:checked{
-                    image        : url(:/res/res/btn_eye_show.png);
-                    border-style : inset;
-                }""")
+        self.act_eye.setCheckable(True)
+        self.act_eye.toggled[bool].connect(self.toggle_eye_icon)
         self.txt_status.setReadOnly(True)
         self.txt_status.setStyleSheet(
                 """
@@ -100,16 +87,15 @@ class ui_pwshare(qt.QObject):
         # GridLayout setting
         self.grid = qt.QGridLayout(dlg)
         self.grid.addWidget(self.lbl_ssid, 0, 0)
-        self.grid.addWidget(self.txt_ssid, 0, 1, 1, 2)
+        self.grid.addWidget(self.txt_ssid, 0, 1)
         self.grid.addWidget(self.lbl_key, 1, 0)
         self.grid.addWidget(self.txt_key, 1, 1)
-        self.grid.addWidget(self.btn_eye, 1, 2)
         self.grid.addWidget(self.lbl_connection, 2, 0)
-        self.grid.addWidget(self.cmb_connection, 2, 1, 1, 2)
+        self.grid.addWidget(self.cmb_connection, 2, 1) 
         self.grid.addWidget(self.lbl_lang, 3, 0)
-        self.grid.addWidget(self.cmb_lang, 3, 1, 1, 2)
-        self.grid.addWidget(self.btn_start, 4, 0, 1, 3)
-        self.grid.addWidget(self.txt_status, 5, 0, 1, 3)
+        self.grid.addWidget(self.cmb_lang, 3, 1)
+        self.grid.addWidget(self.btn_start, 4, 0, 1, 2)
+        self.grid.addWidget(self.txt_status, 5, 0, 1, 2)
 
 
     def set_translator(self, dlg):
@@ -126,6 +112,15 @@ class ui_pwshare(qt.QObject):
             self.btn_start.setText(self.tr("Close"))
         else:
             self.btn_start.setText(self.tr("Start"))
+
+    @qt.pyqtSlot(bool)
+    def toggle_eye_icon(self, flg):
+        if True == flg:
+            self.txt_key.setEchoMode(qt.QLineEdit.Normal)
+            self.act_eye.setIcon(qt.QIcon(":/res/res/btn_eye_show.png"))
+        else:
+            self.txt_key.setEchoMode(qt.QLineEdit.Password)
+            self.act_eye.setIcon(qt.QIcon(":/res/res/btn_eye_hide.png"))
 
 
 #===============================================================================
@@ -151,12 +146,11 @@ class pwshare(qt.QDialog):
         self.ui.txt_ssid.setText(self.__ws.ssid)
         self.ui.txt_key.setText(self.__ws.key)
         # show password or not
+        self.ui.act_eye.toggle()
         if self.__wj.get_value("showpw") == "True":
-            self.ui.btn_eye.setChecked(True)
-            self.ui.txt_key.setEchoMode(qt.QLineEdit.Normal) 
+            self.ui.act_eye.setChecked(True)
         elif self.__wj.get_value("showpw") == "False":
-            self.ui.btn_eye.setChecked(False)
-            self.ui.txt_key.setEchoMode(qt.QLineEdit.Password)
+            self.ui.act_eye.setChecked(False)
         # status information
         self.ui.txt_status.setPlainText(self.get_time()+self.tr("Ready(Must be Admin)\n"))
         if self.__ws.is_started():
@@ -183,9 +177,7 @@ class pwshare(qt.QDialog):
         else:
             self.ui.btn_start.released.connect(self.start_wifi)
         # show password
-        toggle_echomode = lambda flg : self.ui.txt_key.setEchoMode(qt.QLineEdit.Normal) if flg else self.ui.txt_key.setEchoMode(qt.QLineEdit.Password)
-        self.ui.btn_eye.toggled[bool].connect(
-                lambda flg : self.save_showpw(flg) and toggle_echomode(flg))
+        self.ui.act_eye.toggled[bool].connect(self.save_showpw)
         # switch language
         self.ui.cmb_lang.currentTextChanged[str].connect(self.switch_lang)
         # switch connection
@@ -261,6 +253,7 @@ class pwshare(qt.QDialog):
         return "[" + qt.QTime.currentTime().toString() + "] "
 
     # save show-password
+    @qt.pyqtSlot(bool)
     def save_showpw(self, flg):
         if flg:
             self.__wj.put_value("showpw", "True")

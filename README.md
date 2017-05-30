@@ -44,6 +44,9 @@ pyinstaller --uac-admin -w --icon=./res/wifi.ico pyshare-qt.pyw
 ---
 # ChangeLog
 
+## 20170530 - v1.3.28
+ - 优化显示密码界面
+
 ## 20170529 - v1.3.27
  - 美化ssid和key的文本框显示
 

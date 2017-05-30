@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="zh_CN">
+<!DOCTYPE TS><TS version="2.0" language="zh_CN" sourcelanguage="">
 <context>
     <name>MiniWS</name>
     <message>
@@ -138,49 +137,49 @@ Please set share-connection again
 <context>
     <name>pwshare</name>
     <message>
-        <location filename="../pwshare-qt.pyw" line="160"/>
+        <location filename="../pwshare-qt.pyw" line="154"/>
         <source>Ready(Must be Admin)
 </source>
         <translation>就绪（需要管理员模式）
 </translation>
     </message>
     <message>
-        <location filename="../pwshare-qt.pyw" line="162"/>
+        <location filename="../pwshare-qt.pyw" line="156"/>
         <source>Wifi is Not closed last time
 </source>
         <translation>上次Wifi热点未关闭
 </translation>
     </message>
     <message>
-        <location filename="../pwshare-qt.pyw" line="215"/>
+        <location filename="../pwshare-qt.pyw" line="207"/>
         <source>Starting Wifi......
 </source>
         <translation>正开启Wifi热点。。。
 </translation>
     </message>
     <message>
-        <location filename="../pwshare-qt.pyw" line="242"/>
+        <location filename="../pwshare-qt.pyw" line="234"/>
         <source>Error: check Admin!
 </source>
         <translation>错误：检查是否为管理员！
 </translation>
     </message>
     <message>
-        <location filename="../pwshare-qt.pyw" line="225"/>
+        <location filename="../pwshare-qt.pyw" line="217"/>
         <source>Wifi started
 </source>
         <translation>已开启Wifi热点
 </translation>
     </message>
     <message>
-        <location filename="../pwshare-qt.pyw" line="241"/>
+        <location filename="../pwshare-qt.pyw" line="233"/>
         <source>Closing Wifi......
 </source>
         <translation>正关闭Wifi热点。。。
 </translation>
     </message>
     <message>
-        <location filename="../pwshare-qt.pyw" line="246"/>
+        <location filename="../pwshare-qt.pyw" line="238"/>
         <source>Wifi closed
 </source>
         <translation>已关闭Wifi热点
@@ -272,47 +271,47 @@ Please set share-connection again
 <context>
     <name>ui_pwshare</name>
     <message>
-        <location filename="../pwshare-qt.pyw" line="115"/>
+        <location filename="../pwshare-qt.pyw" line="101"/>
         <source>PyWifiShare</source>
         <translation>PyWifiShare</translation>
     </message>
     <message>
-        <location filename="../pwshare-qt.pyw" line="117"/>
+        <location filename="../pwshare-qt.pyw" line="103"/>
         <source>SSID:</source>
         <translation>名称：</translation>
     </message>
     <message>
-        <location filename="../pwshare-qt.pyw" line="118"/>
+        <location filename="../pwshare-qt.pyw" line="104"/>
         <source>KEY:</source>
         <translation>密码：</translation>
     </message>
     <message>
-        <location filename="../pwshare-qt.pyw" line="119"/>
+        <location filename="../pwshare-qt.pyw" line="105"/>
         <source>CONN:</source>
         <translation>连接：</translation>
     </message>
     <message>
-        <location filename="../pwshare-qt.pyw" line="120"/>
+        <location filename="../pwshare-qt.pyw" line="106"/>
         <source>LANG:</source>
         <translation>语言：</translation>
     </message>
     <message>
-        <location filename="../pwshare-qt.pyw" line="125"/>
+        <location filename="../pwshare-qt.pyw" line="111"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../pwshare-qt.pyw" line="127"/>
+        <location filename="../pwshare-qt.pyw" line="113"/>
         <source>Start</source>
         <translation>开启</translation>
     </message>
     <message>
-        <location filename="../pwshare-qt.pyw" line="116"/>
+        <location filename="../pwshare-qt.pyw" line="102"/>
         <source>PassWord</source>
         <translation>密码</translation>
     </message>
     <message>
-        <location filename="../pwshare-qt.pyw" line="121"/>
+        <location filename="../pwshare-qt.pyw" line="107"/>
         <source>Quit</source>
         <translation>退出</translation>
     </message>
