@@ -22,7 +22,7 @@ from pws import WifiShare
 class WSCLI(cmd.Cmd):
     def __init__(self):
         cmd.Cmd.__init__(self)
-        self.prompt = "Python@Wifi-Share>"           # command prompt
+        self.prompt = "Python@Wifi-Share > "           # command prompt
 
     # "help help" or "!help" call this function when no override for do_help
     def help_help(self):             

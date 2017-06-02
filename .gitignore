@@ -13,6 +13,7 @@
 !/*.json
 !/*.qrc
 !/*.ui
+!/*.png
 
 !/res
 !/lang

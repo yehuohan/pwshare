@@ -1,7 +1,9 @@
 
 ---
 # pwshare
- - windows下wifi热点软件，基于python3.6，现主要开发程序为gui-qt(PyQt5)版本（命令行与gui-tk版本为阶段性成果，不再更新）。
+ - windows下wifi热点软件，基于python3.6，现主要开发程序为gui-qt(PyQt5)版本。
+
+![pwshare-qt](https://github.com/yehuohan/pwshare/blob/master/pwshare-qt.png)
 
 ---
 # FileList
@@ -28,6 +30,8 @@ cd pwshare
 pyinstaller --uac-admin -w --icon=./res/wifi.ico pyshare-qt.pyw
 
 # 然后将lang和ws工程生成的ws.dll复制到./dist/pwshare-qt下
+
+# 附：若是直接在cmd中打开pwshare-qt.pyw，需要使用管理员权限运行cmd。
 ```
  
 ---
@@ -44,6 +48,9 @@ pyinstaller --uac-admin -w --icon=./res/wifi.ico pyshare-qt.pyw
 ---
 # ChangeLog
 
+## 20170602 - v1.3.29
+ - 更新README.md，添加图片
+ 
 ## 20170530 - v1.3.28
  - 优化显示密码界面
 
