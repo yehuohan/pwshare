@@ -26,8 +26,10 @@ cd pwshare
 pyrcc5 -o pwshare_rc.py pwshare.qrc
 
 # 先使用pyinstaller生成exe
+# 需要安装PyQt5，且将下面的path换成自己的
 cd pwshare
-pyinstaller --uac-admin -w --icon=./res/wifi.ico pyshare-qt.pyw
+pyinstaller --uac-admin -w --icon=./res/wifi.ico pwshare-qt.pyw
+# -w == --noconsole
 
 # 然后将lang和ws工程生成的ws.dll复制到./dist/pwshare-qt下
 
@@ -47,6 +49,9 @@ pyinstaller --uac-admin -w --icon=./res/wifi.ico pyshare-qt.pyw
 
 ---
 # ChangeLog
+
+## 20170604 - v1.3.30
+ - 添加docs
 
 ## 20170602 - v1.3.29
  - 更新README.md，添加图片

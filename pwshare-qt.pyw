@@ -1,10 +1,12 @@
 
-#===============================================================================
-# file   : pwshare.pyw
-# brief  : python wifi share with qt-gui in windows
-# e-mail : 550034086@qq.com, yehuohan@gmail.com
-# author : yehuohan
-#===============================================================================
+## @file pwshare.pyw
+#  @brief python wifi share with qt-gui in windows
+#  
+#  @date
+#  @version
+#  @author yehuohan, 550034086@qq.com, yehuohan@gmail.com 
+#  @copyright
+
 
 #===============================================================================
 # import
@@ -17,9 +19,19 @@ from pws import WifiShare, WsJson
 
 
 #===============================================================================
-# ui_pwshare class : ui of pwshare
+# Class
 #===============================================================================
+
+## @brief ui_pwhare class
+# 
+# brief ui of pwhare class
 class ui_pwshare(qt.QObject):
+
+    ## @brief set ui to one widget
+    # 
+    #  @param dlg: the widget to setup_ui
+    #  @return
+    #  @retval None
     def setup_ui(self, dlg):
         self.setParent(dlg)
         # Dialog setting
@@ -98,6 +110,11 @@ class ui_pwshare(qt.QObject):
         self.grid.addWidget(self.txt_status, 5, 0, 1, 2)
 
 
+    ## @brief set text of all object
+    # 
+    #  @param dlg: the widget of ui
+    #  @return
+    #  @retval None
     def set_translator(self, dlg):
         dlg.setWindowTitle(self.tr("PyWifiShare"))
         self.txt_key.setPlaceholderText(self.tr("PassWord"))
@@ -107,12 +124,22 @@ class ui_pwshare(qt.QObject):
         self.lbl_lang.setText(self.tr("LANG:"))
         self.act_quit.setText(self.tr("Quit"))
 
+    ## @brief set the text of pushbutton of btn_start according to flg
+    # 
+    #  @param flg: True for "Close" and False for "Start"
+    #  @return
+    #  @retval None
     def set_btn_start_text(self, flg):
         if True == flg:
             self.btn_start.setText(self.tr("Close"))
         else:
             self.btn_start.setText(self.tr("Start"))
 
+    ## @brief qt slot for toggling icon of password-eye
+    # 
+    #  @param flg: True for show password and False for hide password 
+    #  @return
+    #  @retval None
     @qt.pyqtSlot(bool)
     def toggle_eye_icon(self, flg):
         if True == flg:
@@ -123,9 +150,9 @@ class ui_pwshare(qt.QObject):
             self.act_eye.setIcon(qt.QIcon(":/res/res/btn_eye_hide.png"))
 
 
-#===============================================================================
-# pwshare class : wifi share gui-program
-#===============================================================================
+## @brief pwshare class
+# 
+# wifi share gui-program
 class pwshare(qt.QDialog):
     ui = ui_pwshare()
     translator = qt.QTranslator()
@@ -267,9 +294,9 @@ class pwshare(qt.QDialog):
             self.hide()
 
 
-#===============================================================================
-# main-loop
-#===============================================================================
+## @brief main
+# 
+# main-loop of pwshare
 if __name__ == "__main__":
     app = qt.QApplication(sys.argv)
     app.setStyle(qt.QStyleFactory.create("fusion"));

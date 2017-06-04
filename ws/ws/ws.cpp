@@ -1,10 +1,15 @@
 
 //==============================================================================
-/*
- * file   : ws
- * brief  : wifi-share dll
- * e-mail : 550034086@qq.com, yehuohan@gmail.com
- * author : yehuohan
+/*!
+ * @file ws.cpp
+ * @brief wifi-share dll.
+ *
+ * used to manage starting and closing network connection-sharing.
+ *
+ * @date
+ * @version
+ * @author yehuohan, 550034086@qq.com, yehuohan@gmail.com
+ * @copyright
  */
 //==============================================================================
 
@@ -23,9 +28,15 @@ static HRESULT WS_CALL ws_disable_sharing_eht_hn(INetSharingManager* pNSM, const
 //==============================================================================
 
 
-/*
- * brief: enable sharing connections
+//==============================================================================
+/*!
+ * @brief enable sharing connections.
+ *
+ * @param eth_name: the name of network connection to be shared public
+ * @return 
+ * @retval 
  */
+//==============================================================================
 WS_API int WS_CALL ws_enable_sharing(const wchar_t* eth_name)
 {
     // 初始化COM库以供调用线程使用
@@ -75,9 +86,15 @@ WS_API int WS_CALL ws_enable_sharing(const wchar_t* eth_name)
 }
 
 
-/*
- * brief: disable sharing connections
+//==============================================================================
+/*!
+ * @brief disable sharing connections.
+ *
+ * @param eth_name: the name of network connection to be shared public
+ * @return 
+ * @retval 
  */
+//==============================================================================
 WS_API int WS_CALL ws_disable_sharing(const wchar_t* eth_name)
 {
     // 初始化COM库以供调用线程使用
@@ -117,9 +134,16 @@ WS_API int WS_CALL ws_disable_sharing(const wchar_t* eth_name)
 }
 
 
-/*
- * brief: enable sharing ethernet-connection
+//==============================================================================
+/*!
+ * @brief enable ethernet-connection sharing.
+ *
+ * @param pNSM: INetSharingManager object
+ * @param eth_name: the name of network connection to be shared public
+ * @return
+ * @retval
  */
+//==============================================================================
 static HRESULT WS_CALL ws_enable_sharing_eth(INetSharingManager* pNSM, const wchar_t* eth_name)
 {
     // INetConnection: Primary interface for managing network conections
@@ -188,9 +212,15 @@ static HRESULT WS_CALL ws_enable_sharing_eth(INetSharingManager* pNSM, const wch
 }
 
 
-/*
- * brief: enable sharing hostednetwork-connection
+//==============================================================================
+/*!
+ * @brief enable sharing hostednetwork-connection.
+ *
+ * @param pNSM: INetSharingManager object
+ * @return
+ * @retval
  */
+//==============================================================================
 static HRESULT WS_CALL ws_enable_sharing_hn(INetSharingManager *pNSM)
 {
     // INetConnection: Primary interface for managing network conections
@@ -259,9 +289,16 @@ static HRESULT WS_CALL ws_enable_sharing_hn(INetSharingManager *pNSM)
 }
 
 
-/*
- * brief: disable sharing of ethernet and hostednetwork connections
+//==============================================================================
+/*!
+ * @brief disable sharing of ethernet and hostednetwork connections.
+ *
+ * @param pNSM: INetSharingManager object
+ * @param eth_name: the name of network connection to be shared public
+ * @return
+ * @retval
  */
+//==============================================================================
 static HRESULT WS_CALL ws_disable_sharing_eht_hn(INetSharingManager* pNSM, const wchar_t* eth_name)
 {
     // INetConnection: Primary interface for managing network conections
@@ -347,9 +384,16 @@ static HRESULT WS_CALL ws_disable_sharing_eht_hn(INetSharingManager* pNSM, const
 }
 
 
-/*
- * brief: get all connections
+//==============================================================================
+/*!
+ * @brief get all connections.
+ *
+ * @param num: store the number of connection
+ * @param name: the vector store all connections
+ * @return
+ * @retval
  */
+//==============================================================================
 WS_API int WS_CALL ws_get_connections(long* num, std::vector<std::wstring>* name)
 {
     // 初始化COM库以供调用线程使用
@@ -433,10 +477,16 @@ WS_API int WS_CALL ws_get_connections(long* num, std::vector<std::wstring>* name
     return WS_OK;
 }
 
-
-/*
- * brief: convert std::vector to python-tuple
+//==============================================================================
+/*!
+ * @brief convert vector to python-tuple.
+ * This function is used for python script
+ *
+ * @param ret: the return result of ws_get_connection
+ * @return return py-list to python to use
+ * @retval
  */
+//==============================================================================
 WS_API PyObject* WS_CALL ws_py_get_connections(int* ret)
 {
     std::vector<std::wstring> name;
@@ -459,9 +509,15 @@ WS_API PyObject* WS_CALL ws_py_get_connections(int* ret)
 }
 
 
-/*
- * brief: reports whether the operating system supports connection sharing
+//==============================================================================
+/*!
+ * @brief reports whether the operating system supports connection sharing.
+ *
+ * @param flg: store the flag that supporing connection-sharing or not
+ * @return
+ * @retval
  */
+//==============================================================================
 WS_API int WS_CALL ws_support_connection_sharing(bool* flg)
 {
     // 初始化COM库以供调用线程使用

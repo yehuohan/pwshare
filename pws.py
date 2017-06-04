@@ -1,11 +1,11 @@
 
-#===============================================================================
-# file   : WifiShare.py
-# brief  : WifiShare module used in windows
-# e-mail : 550034086@qq.com, yehuohan@gmail.com
-# author : yehuohan
-#===============================================================================
-
+## @file pws.py
+#  @brief WifiShare module used in windows
+#  
+#  @date
+#  @version
+#  @author yehuohan, 550034086@qq.com, yehuohan@gmail.com
+#  @copyright
 
 #===============================================================================
 # import
@@ -17,51 +17,83 @@ import ctypes
 
 
 #===============================================================================
-# JsonBase class
+# Class
 #===============================================================================
+
+## @brief JsonBase class
+# 
+#  For writing and reading json-format file
 class JsonBase:
     __filename = None
     cf = None
 
+    ## @brief init of JsonBase
+    # 
+    #  @param filename: json-file's name
     def __init__(self, filename):
         self.__filename = filename
 
-    # return existence of json file
+    ## @brief report json-file exist or not
+    #
+    #  @return existence of json file
     def is_json_exist(self):
         return os.path.exists(self.__filename)
 
-    # create defalut .json
+    ## @brief create default json-file
+    #
+    #  @param settings: default content of json-file
+    #  @return
+    #  @retval
     def make_default(self, settings = {}):
         with open(self.__filename, "w", encoding="utf-8") as dump_f:
             json.dump(settings, dump_f)
 
-    # read json 
+    ## @brief read json-file
+    #
+    #  @param
+    #  @return
+    #  @retval
     def open_json(self):
         with open(self.__filename, "r", encoding="utf-8") as json_f:
             self.cf = json.load(json_f)
 
-    # get key-value 
+    ## @brief get key-value 
+    #
+    #  @param key: get the value response to key
+    #  @return value response to key
+    #  @retval
     def get_kv(self, key):
         return self.cf[key]
 
-    # put key-value
+    ## @brief put key-value
+    #
+    #  @param key-value: write the key-value to json-file
+    #  @return
+    #  @retval
     def put_kv(self, key, value):
         self.cf[key] = value
 
-    # write json
+    ## @brief write json
+    #
+    #  @param
+    #  @return
+    #  @retval
     def write_json(self):
         with open(self.__filename, "w", encoding="utf-8") as dump_f:
             json.dump(self.cf, dump_f)
 
 
-#===============================================================================
-# WsJson class
-#===============================================================================
+## @brief WsJson class
+#
+#  class inheriting from JsonBase as setting of WifiShare class and pwshare
 class WsJson(JsonBase):
+    ## filename of json-file
     __filename = "pws.json"
-    __main_key = None
 
-    # all settings in .json will set to cf
+    ## main key in json-file
+    __main_key = None 
+
+    ## default settings value
     cf_defalut = {
         "pws.json": [
             "WifiShare",
@@ -80,6 +112,11 @@ class WsJson(JsonBase):
         "Gui-tk": {}
     }
 
+    ## @brief init of WsJson
+    # 
+    #  @param index_key: the main-key in json-file
+    #  @return
+    #  @retval
     def __init__(self, index_key):
         self.__main_key = index_key
         super(WsJson, self).__init__(self.__filename)
@@ -87,22 +124,32 @@ class WsJson(JsonBase):
             super().make_default(self.cf_defalut)
         super().open_json()
 
-    # get key-value in main_key
+    ## @brief get key-value in main_key
+    # 
+    #  @param key: get the value response to key
+    #  @return the value response to key
     def get_value(self, key):
         return self.cf[self.__main_key][key]
 
-    # put key-value in main_key
+    ## @brief put key-value in main_key
+    # 
+    #  @param key-value: write key-value to the json-file
     def put_value(self, key, value):
         self.cf[self.__main_key][key] = value
         super().write_json()
 
 
-#===============================================================================
-# WsDll class 
-#===============================================================================
+## @brief WsDll class 
+#
+#  access ws-dll's funtions
 class WsDll:
     __wsdll = None
 
+    ## @brief init of WsDll
+    # 
+    #  @param path: the path of ws.dll
+    #  @return
+    #  @retval
     def __init__(self, path = "ws.dll"):
         self.__wsdll = ctypes.windll.LoadLibrary(path)
 
@@ -114,7 +161,12 @@ class WsDll:
     # user-args    : What user expect function return. May more than one
     #===========================================================================
 
-    # start connection sharing of ethernet and hostednetwork
+    ## @brief start connection sharing of ethernet and hostednetwork
+    # 
+    #  @param eth_name: 将要共享网络连接的名称
+    #  @return 返回一个元组tuple(flg, ret)
+    #  @retval flg: 函数是否执行成功
+    #  @retval ret: 函数返回值，即ws.dll接口的返回值
     def start_connection_sharing(self, eth_name):
         name_p = ctypes.c_wchar_p()
         name_p.value = eth_name;
@@ -124,7 +176,12 @@ class WsDll:
         else:
             return (False, ret)
 
-    # close connection sharing of ethernet and hostednetwork
+    ## @brief close connection sharing of ethernet and hostednetwork
+    # 
+    #  @param eth_name: 共享网络连接的名称
+    #  @return 返回一个元组tuple(flg, ret)
+    #  @retval flg: 函数是否执行成功
+    #  @retval ret: 函数返回值，即ws.dll接口的返回值
     def close_connection_sharing(self, eth_name):
         name_p = ctypes.c_wchar_p()
         name_p.value = eth_name;
@@ -134,7 +191,12 @@ class WsDll:
         else:
             return (False, ret)
 
-    # get all connections's name to choose eth_name
+    ## @brief get all connections's name to choose eth_name
+    # 
+    #  @return 返回一个元组tuple(flg, ret, cons)
+    #  @retval flg: 函数是否执行成功
+    #  @retval ret: 函数返回值，即ws.dll接口的返回值
+    #  @retval cons: 所有连接名称列表(如果函数执行正确)
     def get_connections(self):
         ret = ctypes.c_int()
         self.__wsdll.ws_py_get_connections.restype = ctypes.py_object
@@ -145,7 +207,12 @@ class WsDll:
         else:
             return (False, ret.value)
 
-    # report whether the operating-system supporting connection sharing
+    ## @brief report whether the operating-system supporting connection sharing
+    # 
+    #  @return 返回一个元组tuple(flg1, ret, flg2)
+    #  @retval flg1: 函数是否执行成功
+    #  @retval ret: 函数返回值，即ws.dll接口的返回值
+    #  @retval flg2: 是否支持网络连接共享
     def is_support_connection_sharing(self):
         flg = ctypes.c_bool()
         ret = self.__wsdll.ws_support_connection_sharing(ctypes.byref(flg))
@@ -156,17 +223,22 @@ class WsDll:
             return (False, ret)
 
 
-#===============================================================================
-# WifiShare class
-#===============================================================================
+## @brief WifiShare class
+#
+#  WifiShare manage wifi-setting, wifi-starting, wifi-closing, network-connection
+#  sharing, and json-setting.
 class WifiShare:
     __wj = WsJson("WifiShare")
     __wd = WsDll("ws.dll")
-    # hostednetwork status information
+
+    ## @name hosted-network's status, ssid and key
+    #  @{
     hn_status = {}
     ssid = None
     key = None
-    # the name of the connection to be shared
+    ## @}
+
+    ## the name of the network-connection to be shared
     eth_name = None
 
     def __init__(self):
@@ -177,18 +249,39 @@ class WifiShare:
         if self.is_started():
             self.set_ssid(self.get_ssidname())
 
+    ## @brief set ssid
+    # 
+    #  @param s: name of wifi
+    #  @return
+    #  @retval
     def set_ssid(self, s):
         if s!= "":
             self.ssid = s
 
+    ## @brief set key
+    # 
+    #  @param k: just the password of wifi
+    #  @return
+    #  @retval
     def set_key(self, k):
         if k != "":
             self.key = k
 
+    ## @brief set network-connection name to self.eth_name
+    # 
+    #  @param name: network-connection's name
+    #  @return
+    #  @retval
     def set_eth_name(self, name):
         if name != "":
             self.eth_name = name
 
+    ## @brief set wifi's ssid and key and then create wifi
+    # 
+    #  @param s: ssid
+    #  @param k: key
+    #  @return return the status of command "netsh"
+    #  @retval
     def create_wifi(self, s = "", k = ""):
         self.set_ssid(s)
         self.set_key(k)
@@ -199,6 +292,12 @@ class WifiShare:
         self.__get_hn_status()
         return ret
 
+    ## @brief start wifi
+    # 
+    #  create_wifi must be called before calling start_wifi
+    #
+    #  @return return the status of command "netsh"
+    #  @retval
     def start_wifi(self):
         ret = subprocess.getstatusoutput("netsh wlan start hostednetwork")
         self.__get_hn_status()
@@ -208,22 +307,39 @@ class WifiShare:
         self.__wj.put_value("eth_name", self.eth_name)
         return ret
 
+    ## @brief stop wifi
+    # 
+    #  wifi can be started again by calling start_wifi after stop_wifi
+    #
+    #  @return return the status of command "netsh"
+    #  @retval
     def stop_wifi(self):
         ret = subprocess.getstatusoutput("netsh wlan stop hostednetwork")
         self.__get_hn_status()
         return ret
 
+    ## @brief close wifi
+    # 
+    #  create_wifi have to be called again when you want to start wifi again
+    #
+    #  @return return the status of command "netsh"
     def close_wifi(self):
         ret = subprocess.getstatusoutput("netsh wlan set hostednetwork mode=disallow")
         self.__get_hn_status()
         self.__wd.close_connection_sharing(self.eth_name)
         return ret
 
-    # return the status information of hostednetwork
+    ## @brief return the status information of hostednetwork
+    # 
+    #  @return return the status of command "netsh"
+    #  @retval
     def show_wifi(self):
         return subprocess.getstatusoutput("netsh wlan show hostednetwork")
 
-    # get all connections that may be shared
+    ## @brief get all connections that may be shared
+    # 
+    #  @return list of connection's name
+    #  @retval
     def get_connections(self):
         ret = self.__wd.get_connections()
         if(True == ret[0]):
@@ -231,7 +347,10 @@ class WifiShare:
         else:
             return None
 
-    # parse the status information of hostednetwork stored in self.hn_status
+    ## @brief parse the status information of hostednetwork stored in self.hn_status
+    # 
+    #  @return return the flag that function is executed successful or not
+    #  @retval
     def __get_hn_status(self):
         ret = self.show_wifi()
         ret_lst = [] 
@@ -249,19 +368,29 @@ class WifiShare:
     # functions below only for windows in Chinese Lauguage
     #===========================================================================
 
-    # check if wifi is started
+    ## @brief check if wifi is started
+    # 
+    #  @return report wifi is started of not
+    #  @retval
     def is_started(self):
         if self.hn_status["状态"] == "已启动":
             return True
         else:
             return False
 
-    # get ssid name if wifi is already started
+    ## @brief get ssid name if wifi is already started
+    # 
+    #  @return ssid of wifi
+    #  @retval
     def get_ssidname(self):
         if self.is_started():
             return self.hn_status["SSID名称"].replace('“', "").replace('”', "")
 
-    # get user(client) number
+    ## @brief get user(client) number
+    # 
+    #  @param None
+    #  @return the number of user in using wifi
+    #  @retval
     def get_user_num(self):
         self.__get_hn_status()      # update user-num first
         if self.is_started():

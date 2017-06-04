@@ -1,12 +1,16 @@
 
 //==============================================================================
-/*
- * file   : ws
- * brief  : wifi-share dll
- * e-mail : 550034086@qq.com, yehuohan@gmail.com
- * author : yehuohan
+/*!
+ * @file ws.h
+ * @brief wifi-share dll
+ *
+ * @date
+ * @version
+ * @author yehuohan, 550034086@qq.com, yehuohan@gmail.com
+ * @copyright
  */
 //==============================================================================
+
 
 #ifndef _WS_H
 #define _WS_H
@@ -37,6 +41,10 @@
 //==============================================================================
 /* Macro */
 
+/*!
+ * @name dll setting
+ * @{
+ */
 //#define WS_API
 #ifndef WS_API
 
@@ -53,15 +61,20 @@
 #endif
 
 #endif
+/*! @} */
 
-// return value
-#define WS_OK                   0x00
-#define WS_ERR_CREATE           0x01        // error when creating NetSharingManager instance
-#define WS_ERR_SHARE_EN_HN      0x02        // error when enable sharing hostednetwork
-#define WS_ERR_SHARE_EN_ETH     0x03        // error when enable sharing ethernet
-#define WS_ERR_SHARE_DIS        0x04        // error when disable sharing connection
-#define WS_ERR_GET_CONNECTION   0x05        // error when getting information of connections
 
+/*!
+ * @name return value of funtion
+ * @{
+ */
+#define WS_OK                   0x00        /**< function is executed successfule */
+#define WS_ERR_CREATE           0x01        /**< error when creating NetSharingManager instance */
+#define WS_ERR_SHARE_EN_HN      0x02        /**< error when enable sharing hostednetwork */
+#define WS_ERR_SHARE_EN_ETH     0x03        /**< error when enable sharing ethernet */
+#define WS_ERR_SHARE_DIS        0x04        /**< error when disable sharing connection */
+#define WS_ERR_GET_CONNECTION   0x05        /**< error when getting information of connections */
+/*! @} */
 
 /* Macro End */
 //==============================================================================
@@ -74,12 +87,17 @@
 extern "C"{
 #endif
 
+/*!
+ * @name interface of ws dll
+ * @{
+ */
 	WS_API int WS_CALL ws_enable_sharing(const wchar_t* eth_name);
     WS_API int WS_CALL ws_disable_sharing(const wchar_t* eth_name);
 	WS_API int WS_CALL ws_get_connections(long* num, std::vector<std::wstring>* name);
     WS_API int WS_CALL ws_support_connection_sharing(bool* flg);
 
 	WS_API PyObject* WS_CALL ws_py_get_connections(int* ret);
+/*! @} */
 
     // WS_API int WS_CALL ws_set_hostednetwork(const wchar_t* ssid, const wchar_t* key);
     // WS_API int WS_CALL ws_start_hostednetwork();
