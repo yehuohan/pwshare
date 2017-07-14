@@ -1,4 +1,15 @@
 
+## @mainpage PwShare
+# PwShare是基于Python和C++而实现Wifi热点的工具。
+# 
+# ## 特点
+#  - 使用python实现界面(qt5)和逻辑。
+#  - 使用C++开发实现Wifi连接共享的dll链接库。
+#
+# ## 说明文档 
+#  @subpage README.md
+
+
 ## @file pwshare.pyw
 #  @brief python wifi share with qt-gui in windows
 #  
@@ -21,6 +32,11 @@ from pws import WifiShare, WsJson
 #===============================================================================
 # Class
 #===============================================================================
+
+## @defgroup PWS_QT wifi-share ui module
+#  
+#  @{
+
 
 ## @brief ui_pwhare class
 # 
@@ -292,6 +308,9 @@ class pwshare(qt.QDialog):
     def changeEvent(self, event):
         if event.type() == qt.QEvent.WindowStateChange and self.isMinimized():
             self.hide()
+
+
+## @}
 
 
 ## @brief main

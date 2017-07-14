@@ -4,13 +4,14 @@
  * @file ws.h
  * @brief wifi-share dll
  *
+ * used to manage starting and closing network connection-sharing.
+ *
  * @date
  * @version
- * @author yehuohan, 550034086@qq.com, yehuohan@gmail.com
+ * @author yehuohan, yehuohan@qq.com, yehuohan@gmail.com
  * @copyright
  */
 //==============================================================================
-
 
 #ifndef _WS_H
 #define _WS_H
@@ -41,10 +42,6 @@
 //==============================================================================
 /* Macro */
 
-/*!
- * @name dll setting
- * @{
- */
 //#define WS_API
 #ifndef WS_API
 
@@ -65,6 +62,12 @@
 
 
 /*!
+ * @addtogroup WS_API
+ * 
+ * @{
+ */
+
+/*!
  * @name return value of funtion
  * @{
  */
@@ -75,6 +78,8 @@
 #define WS_ERR_SHARE_DIS        0x04        /**< error when disable sharing connection */
 #define WS_ERR_GET_CONNECTION   0x05        /**< error when getting information of connections */
 /*! @} */
+/*! @} */
+
 
 /* Macro End */
 //==============================================================================
@@ -87,6 +92,16 @@
 extern "C"{
 #endif
 
+
+/*!
+ * @defgroup WS_API ws dll module
+ * 
+ * 用于实现wifi连接共享，基于Windows系统API而实现。
+ * 最后使用python调用dll库中的接口函数。
+ *
+ * @{
+ */
+
 /*!
  * @name interface of ws dll
  * @{
@@ -97,6 +112,7 @@ extern "C"{
     WS_API int WS_CALL ws_support_connection_sharing(bool* flg);
 
 	WS_API PyObject* WS_CALL ws_py_get_connections(int* ret);
+/*! @} */
 /*! @} */
 
     // WS_API int WS_CALL ws_set_hostednetwork(const wchar_t* ssid, const wchar_t* key);

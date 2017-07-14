@@ -11,7 +11,6 @@
  - pwshare-cli.py : 命令行封装程序(不再更新)
  - pwshare-tk.pyw : tkinter-gui封装程序(不再更新)
  - pwshare-qt.pyw : qt-gui封装程序
- - pwshare.ui	  : qt-gui界面（暂时未用）
  - pwshare.qrc    : qt-gui资源文件
  - lang           : qt-gui语言文件
  - res			  : 资源存放目录
@@ -25,13 +24,12 @@
 cd pwshare
 pyrcc5 -o pwshare_rc.py pwshare.qrc
 
-# 先使用pyinstaller生成exe
-# 需要安装PyQt5，且将下面的path换成自己的
+# 使用pyinstaller生成exe，需要安装PyQt5，且将下面的path换成自己的
+# 其中 -w == --noconsole
 cd pwshare
 pyinstaller --uac-admin -w --icon=./res/wifi.ico pwshare-qt.pyw
-# -w == --noconsole
 
-# 然后将lang和ws工程生成的ws.dll复制到./dist/pwshare-qt下
+# 将lang和ws工程生成的ws.dll复制到./dist/pwshare-qt下
 
 # 附：若是直接在cmd中打开pwshare-qt.pyw，需要使用管理员权限运行cmd。
 ```
@@ -49,6 +47,9 @@ pyinstaller --uac-admin -w --icon=./res/wifi.ico pwshare-qt.pyw
 
 ---
 # ChangeLog
+
+## 20170714 - v1.3.31
+ - 完善docs
 
 ## 20170604 - v1.3.30
  - 添加docs

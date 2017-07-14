@@ -1,28 +1,27 @@
 
-//==============================================================================
-/*!
- * @file ws.cpp
- * @brief wifi-share dll.
- *
- * used to manage starting and closing network connection-sharing.
- *
- * @date
- * @version
- * @author yehuohan, 550034086@qq.com, yehuohan@gmail.com
- * @copyright
- */
-//==============================================================================
-
-
 #include "ws.h"
 
 
 //==============================================================================
 /* Declaration */
 
+/*!
+ * @addtogroup WS_API 
+ * 
+ * @{
+ */
+
+/*!
+ * @name private interface of ws dll
+ * @{
+ */
+
 static HRESULT WS_CALL ws_enable_sharing_eth(INetSharingManager* pNSM, const wchar_t* eth_name);
 static HRESULT WS_CALL ws_enable_sharing_hn(INetSharingManager* pNSM);
 static HRESULT WS_CALL ws_disable_sharing_eht_hn(INetSharingManager* pNSM, const wchar_t* eth_name);
+
+/*! @} */
+/*! @} */
 
 /* Declaration End */
 //==============================================================================

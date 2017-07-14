@@ -20,6 +20,10 @@ import ctypes
 # Class
 #===============================================================================
 
+## @defgroup PWS wifi-share python module
+#  
+#  @{
+
 ## @brief JsonBase class
 # 
 #  For writing and reading json-format file
@@ -396,6 +400,8 @@ class WifiShare:
         if self.is_started():
             return self.hn_status["客户端数"]
 
+
+## @}
 
 #===============================================================================
 # main-loop for test

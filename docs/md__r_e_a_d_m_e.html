@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>pwshare: README</title>
+<title>PwShare: README</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -19,7 +19,7 @@
  <tr style="height: 56px;">
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">pwshare
+   <div id="projectname">PwShare
    </div>
   </td>
  </tr>
@@ -57,7 +57,6 @@ $(function() {
 <li><a class="el" href="pwshare-cli_8py_source.html">pwshare-cli.py</a> : 命令行封装程序(不再更新)</li>
 <li><a class="el" href="pwshare-tk_8pyw_source.html">pwshare-tk.pyw</a> : tkinter-gui封装程序(不再更新)</li>
 <li><a class="el" href="pwshare-qt_8pyw_source.html">pwshare-qt.pyw</a> : qt-gui封装程序</li>
-<li>pwshare.ui : qt-gui界面（暂时未用）</li>
 <li>pwshare.qrc : qt-gui资源文件</li>
 <li>lang : qt-gui语言文件</li>
 <li>res : 资源存放目录</li>
@@ -67,7 +66,7 @@ $(function() {
 <ul>
 <li>按下列步骤生成exe文件</li>
 </ul>
-<div class="fragment"><div class="line"># 生成资源文件</div><div class="line">cd pwshare</div><div class="line">pyrcc5 -o pwshare_rc.py pwshare.qrc</div><div class="line"></div><div class="line"># 先使用pyinstaller生成exe</div><div class="line"># 需要安装PyQt5，且将下面的path换成自己的</div><div class="line">cd pwshare</div><div class="line">pyinstaller --uac-admin -w --icon=./res/wifi.ico pwshare-qt.pyw</div><div class="line"># -w == --noconsole</div><div class="line"></div><div class="line"># 然后将lang和ws工程生成的ws.dll复制到./dist/pwshare-qt下</div><div class="line"></div><div class="line"># 附：若是直接在cmd中打开pwshare-qt.pyw，需要使用管理员权限运行cmd。</div></div><!-- fragment --> <hr/>
+<div class="fragment"><div class="line"># 生成资源文件</div><div class="line">cd pwshare</div><div class="line">pyrcc5 -o pwshare_rc.py pwshare.qrc</div><div class="line"></div><div class="line"># 使用pyinstaller生成exe，需要安装PyQt5，且将下面的path换成自己的</div><div class="line"># 其中 -w == --noconsole</div><div class="line">cd pwshare</div><div class="line">pyinstaller --uac-admin -w --icon=./res/wifi.ico pwshare-qt.pyw</div><div class="line"></div><div class="line"># 将lang和ws工程生成的ws.dll复制到./dist/pwshare-qt下</div><div class="line"></div><div class="line"># 附：若是直接在cmd中打开pwshare-qt.pyw，需要使用管理员权限运行cmd。</div></div><!-- fragment --> <hr/>
  <h1>TODO</h1>
 <ul>
 <li>gui-qt动态信息显示</li>
@@ -80,6 +79,14 @@ $(function() {
 </ul>
 <hr/>
  <h1>ChangeLog</h1>
+<h2>20170714 - v1.3.31</h2>
+<ul>
+<li>完善docs</li>
+</ul>
+<h2>20170604 - v1.3.30</h2>
+<ul>
+<li>添加docs</li>
+</ul>
 <h2>20170602 - v1.3.29</h2>
 <ul>
 <li>更新README.md，添加图片</li>

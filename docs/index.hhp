@@ -6,10 +6,10 @@ Default Window=main
 Default topic=index.html
 Index file=index.hhk
 Language=0x804 Chinese (PRC)
-Title=pwshare
+Title=PwShare
 
 [WINDOWS]
-main="pwshare","index.hhc","index.hhk","index.html","index.html",,,,,0x23520,,0x10387e,,,,,,,,0
+main="PwShare","index.hhc","index.hhk","index.html","index.html",,,,,0x23520,,0x10387e,,,,,,,,0
 
 [FILES]
 pws_8py_source.html
@@ -22,10 +22,11 @@ ws_8cpp_source.html
 ws_8h_source.html
 ws__test_8cpp_source.html
 pws_8py.html
-ws_8cpp.html
 ws_8h.html
-ws__test_8cpp.html
 md__r_e_a_d_m_e.html
+group___p_w_s.html
+group___p_w_s___q_t.html
+group___w_s___a_p_i.html
 classpws_1_1_json_base.html
 classpws_1_1_json_base-members.html
 classpws_1_1_wifi_share.html
@@ -47,6 +48,7 @@ dir_d7a9cc045ff0e3360a5dbcbc75efa5c2.html
 dir_c27a19ae2157955f07d166919d3ff2d2.html
 index.html
 pages.html
+modules.html
 annotated.html
 classes.html
 hierarchy.html

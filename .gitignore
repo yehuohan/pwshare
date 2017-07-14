@@ -9,8 +9,6 @@
 
 !/*.py
 !/*.pyw
-!/*.cmd
-!/*.json
 !/*.qrc
 !/*.ui
 !/*.png
