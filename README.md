@@ -3,7 +3,7 @@
 # pwshare
  - windows下wifi热点软件，基于python3.6，现主要开发程序为gui-qt(PyQt5)版本。
 
-![pwshare-qt](https://github.com/yehuohan/pwshare/blob/master/pwshare-qt.png)
+![pwshare-qt](pwshare-qt.png)
 
 ---
 # FileList
