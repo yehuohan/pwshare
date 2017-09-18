@@ -1,12 +1,12 @@
 
 ---
-# pwshare
+## pwshare
  - windows下wifi热点软件，基于python3.6，现主要开发程序为gui-qt(PyQt5)版本。
 
 ![pwshare-qt](pwshare-qt.png)
 
 ---
-# FileList
+## FileList
  - pws.py         : 开启wifi热点的库
  - pwshare-cli.py : 命令行封装程序(不再更新)
  - pwshare-tk.pyw : tkinter-gui封装程序(不再更新)
@@ -16,7 +16,7 @@
  - res			  : 资源存放目录
  - ws			  : ws.dll工程，用于管理连接共享
 
-# Make-exe
+## Make-exe
  - 按下列步骤生成exe文件
 
 ```
@@ -35,12 +35,6 @@ pyinstaller --uac-admin -w --icon=./res/wifi.ico pwshare-qt.pyw
 ```
  
 ---
-# Contributors 
+## Contributors 
  - yehuohan - yehuohan@gamil.com, 550034086@qq.com
-
-
----
-# TODO
-
-
 
