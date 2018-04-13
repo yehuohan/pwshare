@@ -2,6 +2,7 @@
 # .gitignore for ws-dll
 
 /*
+!/Doxyfile
 !/*.gitignore
 !/*.sln
 
