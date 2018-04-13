@@ -1,51 +1,34 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
+"""
+pwshare-tk
+python wifi share with tk-gui in windows
+:author:
+    yehuohan 550034086@qq.com, yehuohan@gmail.com
+"""
 
-#===============================================================================
-# file   : pwshare-tk
-# brief  : python wifi share with tk-gui in windows
-# e-mail : 550034086@qq.com, yehuohan@gmail.com
-# author : yehuohan
-#===============================================================================
-
-
-#===============================================================================
-# import
-#===============================================================================
 import sys
 import tkinter as tk
 from pws import WifiShare
 
-#===============================================================================
-# MiniWS class : mini wifi share gui-program
-#===============================================================================
 class MiniWS():
-    # wifi share module
-    __ws = WifiShare()
+    """ MiniWs class.
+    mini wifi share gui-program
+    """
 
-    # main windows
-    __mw = None
-    __btn_start = None
-    __lbl_msg = None
-
-    # ui font
-    __font = ("Consolas", 12)
-
-    # ssid and key
-    __ssid = None
-    __key = None
-
-    # message
     __msg = {"R":"Ready(in Admin)", "S":"Started Wifi", "C":"Closed Wifi"}
 
     def __init__(self):
+        self.__ws = WifiShare()
+        self.__font = ("Consolas", 12)
         self.__mw = tk.Tk()
         self.__mw.title("MiniWS")
         self.__mw.geometry("280x210")
         self.__mw.resizable(width = False, height = True)
-        self.init_ui()
+        self.__init_ui()
 
-    # init ui of main window
-    def init_ui(self):
+    def __init_ui(self):
         # StringVar
         self.__ssid = tk.StringVar()
         self.__key = tk.StringVar()
@@ -91,11 +74,6 @@ class MiniWS():
     # execute main-loop
     def exec(self):
         self.__mw.mainloop()
-
-
-#===============================================================================
-# Main-Loop
-#===============================================================================
 
 if __name__ == "__main__":
     mws = MiniWS()

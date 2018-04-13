@@ -1,11 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
-#===============================================================================
-# file   : pwshare
-# brief  : python wifi share in windows
-# e-mail : 550034086@qq.com, yehuohan@gmail.com
-# author : yehuohan
-#===============================================================================
-
+"""
+python wifi share in windows
+:author:
+    yehuohan, 550034086@qq.com, yehuohan@gmail.com
+"""
 
 #===============================================================================
 # import
@@ -16,10 +16,10 @@ import subprocess
 from pws import WifiShare
 
 
-#===============================================================================
-# WSCLI class : wifi share command-line interface
-#===============================================================================
 class WSCLI(cmd.Cmd):
+    """ WSCLI class.
+    wifi share command-line interface
+    """
     def __init__(self):
         cmd.Cmd.__init__(self)
         self.prompt = "Python@Wifi-Share > "           # command prompt
@@ -101,10 +101,6 @@ Command:
             """)
 
 
-
-#===============================================================================
-# Main-Loop
-#===============================================================================
 
 if __name__ == "__main__":
     wscli = WSCLI()

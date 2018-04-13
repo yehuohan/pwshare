@@ -1,22 +1,16 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
-## @mainpage PwShare
-# PwShare是基于Python和C++而实现Wifi热点的工具。
-# 
-# ## 特点
-#  - 使用python实现界面(qt5)和逻辑。
-#  - 使用C++开发实现Wifi连接共享的dll链接库。
-#
-# ## 说明文档 
-#  @subpage README.md
+"""
+PwShare
+PwShare是基于Python和C++而实现Wifi热点的工具。
+特点
+ - 使用python实现界面(qt5)和逻辑。
+ - 使用C++开发实现Wifi连接共享的dll链接库。
 
-
-## @file pwshare.pyw
-#  @brief python wifi share with qt-gui in windows
-#  
-#  @date
-#  @version
-#  @author yehuohan, 550034086@qq.com, yehuohan@gmail.com 
-#  @copyright
+:author:
+    - yehuohan, 550034086@qq.com, yehuohan@gmail.com
+"""
 
 
 #===============================================================================
@@ -33,22 +27,16 @@ from pws import WifiShare, WsJson
 # Class
 #===============================================================================
 
-## @defgroup PWS_QT wifi-share ui module
-#  
-#  @{
-
-
-## @brief ui_pwhare class
-# 
-# brief ui of pwhare class
 class ui_pwshare(qt.QObject):
+    """ ui_pwhare class
+    ui of pwhare class
+    """
 
-    ## @brief set ui to one widget
-    # 
-    #  @param dlg: the widget to setup_ui
-    #  @return
-    #  @retval None
     def setup_ui(self, dlg):
+        """ set ui to one widget
+        :Parameters:
+            - dlg: the widget to setup_ui
+        """
         self.setParent(dlg)
         # Dialog setting
         dlg.setFont(qt.QFont("Cousine", 11))
@@ -108,7 +96,7 @@ class ui_pwshare(qt.QObject):
         self.tray_icon = qt.QSystemTrayIcon(qt.QIcon(":/res/res/dlg_wifi.png"), dlg)
         self.tray_icon.setVisible(True)
         self.tray_icon.setContextMenu(self.tray_menu)
- 
+
         # set text of ctrl
         self.set_translator(dlg)
 
@@ -119,19 +107,17 @@ class ui_pwshare(qt.QObject):
         self.grid.addWidget(self.lbl_key, 1, 0)
         self.grid.addWidget(self.txt_key, 1, 1)
         self.grid.addWidget(self.lbl_connection, 2, 0)
-        self.grid.addWidget(self.cmb_connection, 2, 1) 
+        self.grid.addWidget(self.cmb_connection, 2, 1)
         self.grid.addWidget(self.lbl_lang, 3, 0)
         self.grid.addWidget(self.cmb_lang, 3, 1)
         self.grid.addWidget(self.btn_start, 4, 0, 1, 2)
         self.grid.addWidget(self.txt_status, 5, 0, 1, 2)
 
-
-    ## @brief set text of all object
-    # 
-    #  @param dlg: the widget of ui
-    #  @return
-    #  @retval None
     def set_translator(self, dlg):
+        """ set text of all object
+        :Parameters:
+            - dlg: the widget of ui
+        """
         dlg.setWindowTitle(self.tr("PyWifiShare"))
         self.txt_key.setPlaceholderText(self.tr("PassWord"))
         self.lbl_ssid.setText(self.tr("SSID:"))
@@ -140,24 +126,22 @@ class ui_pwshare(qt.QObject):
         self.lbl_lang.setText(self.tr("LANG:"))
         self.act_quit.setText(self.tr("Quit"))
 
-    ## @brief set the text of pushbutton of btn_start according to flg
-    # 
-    #  @param flg: True for "Close" and False for "Start"
-    #  @return
-    #  @retval None
     def set_btn_start_text(self, flg):
+        """ set the text of pushbutton of btn_start according to flg
+        :Parameters:
+            - flg: True for "Close" and False for "Start"
+        """
         if True == flg:
             self.btn_start.setText(self.tr("Close"))
         else:
             self.btn_start.setText(self.tr("Start"))
 
-    ## @brief qt slot for toggling icon of password-eye
-    # 
-    #  @param flg: True for show password and False for hide password 
-    #  @return
-    #  @retval None
     @qt.pyqtSlot(bool)
     def toggle_eye_icon(self, flg):
+        """ qt slot for toggling icon of password-eye
+        :Parameters:
+            - flg: True for show password and False for hide password
+        """
         if True == flg:
             self.txt_key.setEchoMode(qt.QLineEdit.Normal)
             self.act_eye.setIcon(qt.QIcon(":/res/res/btn_eye_show.png"))
@@ -165,26 +149,26 @@ class ui_pwshare(qt.QObject):
             self.txt_key.setEchoMode(qt.QLineEdit.Password)
             self.act_eye.setIcon(qt.QIcon(":/res/res/btn_eye_hide.png"))
 
-
-## @brief pwshare class
-# 
-# wifi share gui-program
 class pwshare(qt.QDialog):
-    ui = ui_pwshare()
-    translator = qt.QTranslator()
-    __ws = WifiShare()
-    __wj = WsJson("Gui-qt")
+    """ pwshare class
+    wifi share gui-program
+    """
 
-    # initial
     def __init__(self, parent = None):
         super(pwshare, self).__init__(parent)
+        self.ui = ui_pwshare()
+        self.translator = qt.QTranslator()
+        self.__ws = WifiShare()
+        self.__wj = WsJson("Gui-qt")
+
         self.translator.load(self.__wj.get_value("language"))
         qt.qApp.installTranslator(self.translator)
         self.ui.setup_ui(self)
-        self.init_data()
-        self.create_connection()
+        self.__init_data()
+        self.__create_connection()
 
-    def init_data(self):
+    def __init_data(self):
+        """ init data """
         # set ssid and key value
         self.ui.txt_ssid.setText(self.__ws.ssid)
         self.ui.txt_key.setText(self.__ws.key)
@@ -213,7 +197,8 @@ class pwshare(qt.QDialog):
         # start or close button
         self.ui.set_btn_start_text(self.__ws.is_started())
 
-    def create_connection(self):
+    def __create_connection(self):
+        """ create connection """
         # start or close wifi
         if self.__ws.is_started():
             self.ui.btn_start.released.connect(self.close_wifi)
@@ -229,16 +214,16 @@ class pwshare(qt.QDialog):
         self.ui.tray_icon.activated[qt.QSystemTrayIcon.ActivationReason].connect(self.tray_icon_active)
         self.ui.act_quit.triggered.connect(lambda:self.close())
 
-    # tray-icon activated slot
     @qt.pyqtSlot(qt.QSystemTrayIcon.ActivationReason)
     def tray_icon_active(self, reason):
+        """ tray-icon activated slot """
         if reason == qt.QSystemTrayIcon.Trigger or reason == qt.QSystemTrayIcon.DoubleClick:
             self.showNormal()
             self.setFocus()
 
-    # switch language
     @qt.pyqtSlot(str)
     def switch_lang(self, lang):
+        """ switch language """
         self.translator.load(lang)
         qt.qApp.installTranslator(self.translator)
         self.ui.set_translator(self)
@@ -247,7 +232,7 @@ class pwshare(qt.QDialog):
 
     @qt.pyqtSlot()
     def start_wifi(self):
-        # create wifi with ssid and key
+        """ create wifi with ssid and key """
         msg = self.get_time() + self.tr("Starting Wifi......\n")
         msg_error = self.get_time() + self.tr("Error: check Admin!\n")
         ret = self.__ws.create_wifi(s = self.ui.txt_ssid.text(), k = self.ui.txt_key.text())
@@ -291,31 +276,25 @@ class pwshare(qt.QDialog):
         self.ui.txt_status.setPlainText(msg_error)
         return False
 
-    # get current time
     def get_time(self):
+        """ get current time """
         return "[" + qt.QTime.currentTime().toString() + "] "
 
-    # save show-password
     @qt.pyqtSlot(bool)
     def save_showpw(self, flg):
+        """ save show-password """
         if flg:
             self.__wj.put_value("showpw", "True")
         else:
             self.__wj.put_value("showpw", "False")
-        return True 
+        return True
 
-    # change event: hide when minimized
     def changeEvent(self, event):
+        """ change event: hide when minimized """
         if event.type() == qt.QEvent.WindowStateChange and self.isMinimized():
             self.hide()
 
 
-## @}
-
-
-## @brief main
-# 
-# main-loop of pwshare
 if __name__ == "__main__":
     app = qt.QApplication(sys.argv)
     app.setStyle(qt.QStyleFactory.create("fusion"));
