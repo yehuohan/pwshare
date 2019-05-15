@@ -36,5 +36,5 @@ pyinstaller --uac-admin -w --icon=./res/wifi.ico pwshare-qt.pyw
  
 ---
 ## Contributors 
- - yehuohan - yehuohan@gamil.com, 550034086@qq.com
+ - yehuohan - yehuohan@gamil.com, yehuohan@qq.com
 
